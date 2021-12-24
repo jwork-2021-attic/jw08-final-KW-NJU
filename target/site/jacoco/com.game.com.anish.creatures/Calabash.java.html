@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Calabash.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">myprj</a> &gt; <a href="index.source.html" class="el_package">com.game.com.anish.creatures</a> &gt; <span class="el_source">Calabash.java</span></div><h1>Calabash.java</h1><pre class="source lang-java linenums">package com.game.com.anish.creatures;
+
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+public class Calabash extends Creature implements Runnable {
+
+    ExecutorService exec;
+    int maxhp;
+    int maxbomb;
+    int bomb;
+    int radius;
+    int playernum;
+
+    public ArrayList&lt;Bomb&gt; bomblist;
+
+    public Calabash(World world, int[][] maze, ArrayList&lt;Bomb&gt; bomblist, int playernum) {
+<span class="fc" id="L21">        super(Color.GREEN, (char) 2, world);</span>
+<span class="fc" id="L22">        hp = 100;</span>
+<span class="fc" id="L23">        maxhp = 100;</span>
+<span class="fc" id="L24">        this.maze = maze;</span>
+<span class="fc" id="L25">        exec = Executors.newCachedThreadPool();</span>
+<span class="fc" id="L26">        radius = 1;</span>
+<span class="fc" id="L27">        attack = 10;</span>
+<span class="fc" id="L28">        setbomb(1, 1);</span>
+<span class="fc" id="L29">        this.bomblist = bomblist;</span>
+<span class="fc" id="L30">        this.playernum = playernum;</span>
+<span class="fc" id="L31">    }</span>
+
+    public Calabash(World world, int[][] maze, ArrayList&lt;Bomb&gt; bomblist, int playernum, int hp, int bomb, int maxbomb,
+            int radius) {
+<span class="fc" id="L35">        super(Color.GREEN, (char) 2, world);</span>
+<span class="fc" id="L36">        this.hp = hp;</span>
+<span class="fc" id="L37">        maxhp = 100;</span>
+<span class="fc" id="L38">        this.maze = maze;</span>
+<span class="fc" id="L39">        exec = Executors.newCachedThreadPool();</span>
+<span class="fc" id="L40">        this.radius = radius;</span>
+<span class="fc" id="L41">        attack = 10;</span>
+<span class="fc" id="L42">        setbomb(bomb, maxbomb);</span>
+<span class="fc" id="L43">        this.bomblist = bomblist;</span>
+<span class="fc" id="L44">        this.playernum = playernum;</span>
+<span class="fc" id="L45">    }</span>
+
+    public void run() {
+<span class="fc" id="L48">        maze[this.getX()][this.getY()] = 2;</span>
+<span class="pc bpc" id="L49" title="1 of 4 branches missed.">        while (is_alive() &amp;&amp; Monster.hasmonster()) {</span>
+            // --hp;
+<span class="fc" id="L51">            gethurt();</span>
+            try {
+<span class="fc" id="L53">                TimeUnit.MILLISECONDS.sleep(50);</span>
+<span class="pc" id="L54">            } catch (InterruptedException e) {</span>
+                // TODO Auto-generated catch block
+<span class="nc" id="L56">                e.printStackTrace();</span>
+            }
+        }
+<span class="pc bpc" id="L59" title="1 of 2 branches missed.">        if (Monster.hasmonster())</span>
+<span class="fc" id="L60">            is_dead();</span>
+        else
+<span class="nc" id="L62">            win();</span>
+<span class="fc" id="L63">    }</span>
+
+    @Override
+    public void move(World world, int pos) {
+<span class="pc bpc" id="L67" title="1 of 2 branches missed.">        if (!is_alive())</span>
+<span class="nc" id="L68">            return;</span>
+<span class="fc" id="L69">        int x = this.getX();</span>
+<span class="fc" id="L70">        int y = this.getY();</span>
+<span class="fc" id="L71">        int offsetx = 0, offsety = 0;</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        if (pos == 24)</span>
+<span class="fc" id="L73">            offsety = -1;</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        else if (pos == 25)</span>
+<span class="fc" id="L75">            offsety = 1;</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        else if (pos == 26)</span>
+<span class="fc" id="L77">            offsetx = 1;</span>
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">        else if (pos == 27)</span>
+<span class="fc" id="L79">            offsetx = -1;</span>
+<span class="fc" id="L80">        int newx = x + offsetx;</span>
+<span class="fc" id="L81">        int newy = y + offsety;</span>
+        try {
+<span class="fc" id="L83">            world.lock.lock();</span>
+
+<span class="pc bpc" id="L85" title="5 of 10 branches missed.">            if (newx &gt;= 0 &amp;&amp; newx &lt; maze.length &amp;&amp; newy &gt;= 0 &amp;&amp; newy &lt; maze[x].length &amp;&amp; (maze[newx][newy] == 1</span>
+<span class="nc bnc" id="L86" title="All 6 branches missed.">                    || maze[newx][newy] == 5 || maze[newx][newy] == 6 || maze[newx][newy] == 7)) {</span>
+<span class="fc" id="L87">                this.moveTo(x + offsetx, y + offsety);</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">                if (maze[x][y] == 3)</span>
+<span class="nc" id="L89">                    world.put(new Bomb(this, world, 1, playernum), x, y);</span>
+                else {
+<span class="fc" id="L91">                    world.put(new Floor(world), x, y);</span>
+<span class="fc" id="L92">                    maze[x][y] = 1;</span>
+                }
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">                if (maze[newx][newy] == 5) {</span>
+<span class="nc" id="L95">                    hp = Math.min(hp + 10, maxhp);</span>
+<span class="nc" id="L96">                    printhp(3, maze.length);</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">                } else if (maze[newx][newy] == 6) {</span>
+<span class="nc" id="L98">                    bombitem();</span>
+<span class="nc" id="L99">                    printmaxbomb(17, maze.length);</span>
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">                } else if (maze[newx][newy] == 7) {</span>
+<span class="nc" id="L101">                    addradius();</span>
+<span class="nc" id="L102">                    printr(28, maze.length);</span>
+                }
+<span class="fc" id="L104">                maze[newx][newy] = 2;</span>
+            }
+<span class="fc" id="L106">        } finally {</span>
+<span class="fc" id="L107">            world.lock.unlock();</span>
+
+        }
+<span class="fc" id="L110">    }</span>
+
+    @Override
+    public void gethurt() {
+<span class="fc" id="L114">        int x = this.getX(), y = this.getY();</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">        if (maze[x][y] &gt;= 10) {</span>
+<span class="nc" id="L116">            getattack(maze[x][y]);</span>
+            try {
+<span class="nc" id="L118">                TimeUnit.MILLISECONDS.sleep(300);</span>
+<span class="nc" id="L119">            } catch (InterruptedException e) {</span>
+                // TODO Auto-generated catch block
+<span class="nc" id="L121">                e.printStackTrace();</span>
+            }
+<span class="nc" id="L123">            world.put(this, this.getX(), this.getY());</span>
+        }
+<span class="fc" id="L125">    }</span>
+
+    @Override
+    public void getattack(int num) {
+<span class="fc" id="L129">        hp -= num;</span>
+<span class="fc" id="L130">        printhp(3, maze.length);</span>
+<span class="fc" id="L131">    }</span>
+
+    public int getmaxhp() {
+<span class="nc" id="L134">        return maxhp;</span>
+    }
+
+    private void addradius() {
+<span class="nc" id="L138">        ++radius;</span>
+<span class="nc" id="L139">    }</span>
+
+    public void is_dead() {
+<span class="fc" id="L142">        hp = 0;</span>
+<span class="fc" id="L143">        printhp(3, maze.length);</span>
+<span class="fc" id="L144">        world.put(new Floor(world), this.getX(), this.getY());</span>
+<span class="fc" id="L145">        world.put(new Character(world, 'Y'), maze.length - 9, maze.length + 1);</span>
+<span class="fc" id="L146">        world.put(new Character(world, 'O'), maze.length - 8, maze.length + 1);</span>
+<span class="fc" id="L147">        world.put(new Character(world, 'U'), maze.length - 7, maze.length + 1);</span>
+<span class="fc" id="L148">        world.put(new Character(world, ' '), maze.length - 6, maze.length + 1);</span>
+<span class="fc" id="L149">        world.put(new Character(world, 'L'), maze.length - 5, maze.length + 1);</span>
+<span class="fc" id="L150">        world.put(new Character(world, 'O'), maze.length - 4, maze.length + 1);</span>
+<span class="fc" id="L151">        world.put(new Character(world, 'S'), maze.length - 3, maze.length + 1);</span>
+<span class="fc" id="L152">        world.put(new Character(world, 'T'), maze.length - 2, maze.length + 1);</span>
+<span class="fc" id="L153">        world.put(new Character(world, '!'), maze.length - 1, maze.length + 1);</span>
+<span class="fc" id="L154">    }</span>
+
+    public void printhp(int x, int y) {
+<span class="fc" id="L157">        int temp = Math.max(0, hp);</span>
+<span class="fc" id="L158">        String str = toString(temp);</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">        for (int i = 0; i &lt; str.length(); ++i)</span>
+<span class="fc" id="L160">            world.put(new Character(world, str.charAt(i)), i + x, y);</span>
+<span class="fc" id="L161">    }</span>
+
+    public void printmaxhp(int x, int y) {
+<span class="fc" id="L164">        String str = toString(maxhp);</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">        for (int i = 0; i &lt; str.length(); ++i)</span>
+<span class="fc" id="L166">            world.put(new Character(world, str.charAt(i)), i + x, y);</span>
+<span class="fc" id="L167">    }</span>
+
+    public void printbomb(int x, int y) {
+<span class="nc" id="L170">        int cnt = getbomb();</span>
+<span class="nc bnc" id="L171" title="All 2 branches missed.">        if (cnt &gt; 9)</span>
+<span class="nc" id="L172">            world.put(new Character(world, (char) (cnt / 10 + '0')), x, y);</span>
+        else
+<span class="nc" id="L174">            world.put(new Character(world, ' '), x, y);</span>
+<span class="nc" id="L175">        world.put(new Character(world, (char) (cnt % 10 + '0')), x + 1, y);</span>
+<span class="nc" id="L176">    }</span>
+
+    public void printmaxbomb(int x, int y) {
+<span class="fc" id="L179">        int cnt = getmaxbomb();</span>
+<span class="pc bpc" id="L180" title="1 of 2 branches missed.">        if (cnt &gt; 9)</span>
+<span class="nc" id="L181">            world.put(new Character(world, (char) (cnt / 10 + '0')), x, y);</span>
+        else
+<span class="fc" id="L183">            world.put(new Character(world, ' '), x, y);</span>
+<span class="fc" id="L184">        world.put(new Character(world, (char) (cnt % 10 + '0')), x + 1, y);</span>
+<span class="fc" id="L185">    }</span>
+
+    public void printr(int x, int y) {
+<span class="pc bpc" id="L188" title="1 of 2 branches missed.">        if (radius &gt; 9)</span>
+<span class="nc" id="L189">            world.put(new Character(world, (char) (radius / 10 + '0')), x, y);</span>
+        else
+<span class="fc" id="L191">            world.put(new Character(world, ' '), x, y);</span>
+<span class="fc" id="L192">        world.put(new Character(world, (char) (radius % 10 + '0')), x + 1, y);</span>
+<span class="fc" id="L193">    }</span>
+
+    public int getradius() {
+<span class="fc" id="L196">        return radius;</span>
+    }
+
+    public boolean nobomb() {
+<span class="pc bpc" id="L200" title="1 of 2 branches missed.">        return bomb == 0;</span>
+    }
+
+    public int getbomb() {
+<span class="fc" id="L204">        return bomb;</span>
+    }
+
+    public int getbombing() {
+<span class="fc" id="L208">        int cnt = 0;</span>
+<span class="pc bpc" id="L209" title="1 of 2 branches missed.">        for (Bomb b : bomblist)</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">            if (b.getstate() == 1) {</span>
+<span class="nc" id="L211">                ++cnt;</span>
+<span class="nc" id="L212">                break;</span>
+            }
+<span class="fc" id="L214">        return cnt;</span>
+    }
+
+    public int getmaxbomb() {
+<span class="fc" id="L218">        return maxbomb;</span>
+    }
+
+    private void setbomb(int bomb, int maxbomb) {
+<span class="fc" id="L222">        this.bomb = bomb;</span>
+<span class="fc" id="L223">        this.maxbomb = maxbomb;</span>
+<span class="fc" id="L224">    }</span>
+
+    public void bombitem() {
+<span class="nc" id="L227">        ++maxbomb;</span>
+<span class="nc" id="L228">        ++bomb;</span>
+<span class="nc" id="L229">    }</span>
+
+    public void addbomb() {
+<span class="nc" id="L232">        ++bomb;</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">        for (Bomb b : bomblist)</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">            if (b.getstate() == 2) {</span>
+<span class="nc" id="L235">                bomblist.remove(b);</span>
+<span class="nc" id="L236">                break;</span>
+            }
+<span class="nc" id="L238">    }</span>
+
+    public void usebomb() {
+<span class="fc" id="L241">        --bomb;</span>
+<span class="fc" id="L242">    }</span>
+
+    private String toString(int num) {
+<span class="fc" id="L245">        int a = num % 10;</span>
+<span class="fc" id="L246">        num /= 10;</span>
+<span class="fc" id="L247">        int b = num % 10;</span>
+<span class="fc" id="L248">        num /= 10;</span>
+<span class="fc" id="L249">        int c = num;</span>
+<span class="fc" id="L250">        String str = &quot;&quot;;</span>
+<span class="fc bfc" id="L251" title="All 4 branches covered.">        if (c == 0 &amp;&amp; b == 0) {</span>
+<span class="fc" id="L252">            str += &quot;  &quot;;</span>
+<span class="fc" id="L253">            str += (char) (a + '0');</span>
+<span class="fc bfc" id="L254" title="All 2 branches covered.">        } else if (c == 0) {</span>
+<span class="fc" id="L255">            str += ' ';</span>
+<span class="fc" id="L256">            str += (char) (b + '0');</span>
+<span class="fc" id="L257">            str += (char) (a + '0');</span>
+<span class="fc" id="L258">        } else</span>
+<span class="fc" id="L259">            str += &quot;100&quot;;</span>
+<span class="fc" id="L260">        return str;</span>
+    }
+
+    public void setbomb(World world) {
+<span class="pc bpc" id="L264" title="1 of 2 branches missed.">        if (nobomb())</span>
+<span class="nc" id="L265">            return;</span>
+<span class="fc" id="L266">        int x = this.getX();</span>
+<span class="fc" id="L267">        int y = this.getY();</span>
+<span class="fc" id="L268">        maze[x][y] = 3;</span>
+<span class="fc" id="L269">        Bomb bomb = new Bomb(this, world, radius, playernum);</span>
+<span class="fc" id="L270">        bomblist.add(bomb);</span>
+<span class="fc" id="L271">        world.put(bomb, x, y);</span>
+<span class="fc" id="L272">        exec.execute(bomb);</span>
+<span class="fc" id="L273">        usebomb();</span>
+<span class="fc" id="L274">    }</span>
+
+    public void win() {
+<span class="fc" id="L277">        world.put(new Character(world, 'Y'), maze.length - 8, maze.length + 1);</span>
+<span class="fc" id="L278">        world.put(new Character(world, 'O'), maze.length - 7, maze.length + 1);</span>
+<span class="fc" id="L279">        world.put(new Character(world, 'U'), maze.length - 6, maze.length + 1);</span>
+<span class="fc" id="L280">        world.put(new Character(world, ' '), maze.length - 5, maze.length + 1);</span>
+<span class="fc" id="L281">        world.put(new Character(world, 'W'), maze.length - 4, maze.length + 1);</span>
+<span class="fc" id="L282">        world.put(new Character(world, 'I'), maze.length - 3, maze.length + 1);</span>
+<span class="fc" id="L283">        world.put(new Character(world, 'N'), maze.length - 2, maze.length + 1);</span>
+<span class="fc" id="L284">        world.put(new Character(world, '!'), maze.length - 1, maze.length + 1);</span>
+<span class="fc" id="L285">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

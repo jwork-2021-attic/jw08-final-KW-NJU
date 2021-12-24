@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MazeGenerator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">myprj</a> &gt; <a href="index.source.html" class="el_package">com.game.com.anish.maze</a> &gt; <span class="el_source">MazeGenerator.java</span></div><h1>MazeGenerator.java</h1><pre class="source lang-java linenums">package com.game.com.anish.maze;
+
+import java.util.ArrayList;
+import java.util.Random;
+
+public class MazeGenerator {
+
+<span class="fc" id="L8">    private ArrayList&lt;Node&gt; arr = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L9">    private Random rand = new Random();</span>
+    private int[][] maze;
+    private int dimension;
+
+<span class="fc" id="L13">    public MazeGenerator(int dim) {</span>
+<span class="fc" id="L14">        maze = new int[dim][dim];</span>
+<span class="fc" id="L15">        dimension = dim;</span>
+<span class="fc" id="L16">    }</span>
+
+    public void addplayer(ArrayList&lt;Node&gt; list) {
+<span class="fc bfc" id="L19" title="All 2 branches covered.">        for (int i = 0; i &lt; list.size(); ++i) {</span>
+<span class="fc" id="L20">            int x = list.get(i).x, y = list.get(i).y;</span>
+<span class="fc bfc" id="L21" title="All 2 branches covered.">            for (int j = x - 1; j &lt; x + 2; ++j)</span>
+<span class="fc bfc" id="L22" title="All 2 branches covered.">                for (int k = y - 1; k &lt; y + 2; ++k)</span>
+<span class="fc bfc" id="L23" title="All 8 branches covered.">                    if (j &gt;= 0 &amp;&amp; j &lt; dimension &amp;&amp; k &gt;= 0 &amp;&amp; k &lt; dimension) {</span>
+<span class="fc" id="L24">                        maze[j][k] = 1;</span>
+<span class="fc" id="L25">                        arr.add(new Node(j, k));</span>
+                    }
+        }
+<span class="fc" id="L28">    }</span>
+
+    public void generateMaze() {
+<span class="fc bfc" id="L31" title="All 2 branches covered.">        for (int i = 0; i &lt; 2; ++i) {</span>
+<span class="fc" id="L32">            ArrayList&lt;Node&gt; temp = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L33" title="All 2 branches covered.">            for (int j = 0; j &lt; arr.size(); ++j) {</span>
+<span class="fc" id="L34">                Node next = arr.get(j);</span>
+                // System.out.println(&quot;x:&quot; + next.x + &quot; y:&quot; + next.y);
+<span class="fc" id="L36">                ArrayList&lt;Node&gt; neighbors = findNeighbors(next);</span>
+<span class="fc" id="L37">                randomlyAddNodesToStack(neighbors, temp);</span>
+            }
+<span class="fc" id="L39">            arr = temp;</span>
+        }
+<span class="fc" id="L41">    }</span>
+
+    public int[][] getMaze() {
+<span class="fc" id="L44">        return maze;</span>
+    }
+
+    private void randomlyAddNodesToStack(ArrayList&lt;Node&gt; nodes, ArrayList&lt;Node&gt; temp) {
+        int targetIndex;
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        for (int i = 0; i &lt; nodes.size(); ++i) {</span>
+<span class="fc" id="L50">            targetIndex = rand.nextInt(10);</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">            if (targetIndex &lt; 7) {</span>
+<span class="fc" id="L52">                Node next = nodes.get(i);</span>
+<span class="fc" id="L53">                temp.add(next);</span>
+<span class="fc" id="L54">                maze[next.x][next.y] = 1;</span>
+            }
+        }
+<span class="fc" id="L57">    }</span>
+
+    private ArrayList&lt;Node&gt; findNeighbors(Node node) {
+<span class="fc" id="L60">        ArrayList&lt;Node&gt; neighbors = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">        for (int y = node.y - 1; y &lt; node.y + 2; y++) {</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">            for (int x = node.x - 1; x &lt; node.x + 2; x++) {</span>
+<span class="fc bfc" id="L63" title="All 8 branches covered.">                if (pointOnGrid(x, y) &amp;&amp; pointNotCorner(node, x, y) &amp;&amp; pointNotNode(node, x, y) &amp;&amp; maze[x][y] == 0) {</span>
+<span class="fc" id="L64">                    neighbors.add(new Node(x, y));</span>
+                }
+            }
+        }
+<span class="fc" id="L68">        return neighbors;</span>
+    }
+
+    private Boolean pointOnGrid(int x, int y) {
+<span class="fc bfc" id="L72" title="All 8 branches covered.">        return x &gt;= 0 &amp;&amp; y &gt;= 0 &amp;&amp; x &lt; dimension &amp;&amp; y &lt; dimension;</span>
+    }
+
+    private Boolean pointNotCorner(Node node, int x, int y) {
+<span class="fc bfc" id="L76" title="All 4 branches covered.">        return (x == node.x || y == node.y);</span>
+    }
+
+    private Boolean pointNotNode(Node node, int x, int y) {
+<span class="fc bfc" id="L80" title="All 4 branches covered.">        return !(x == node.x &amp;&amp; y == node.y);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
