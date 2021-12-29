@@ -115,6 +115,7 @@ public class Main extends JFrame implements KeyListener {
                                         }
                                         writebuffer.flip();
                                         client.write(writebuffer);
+                                        worldscreen.check();
                                         worldscreen.writelog();
                                         break;
                                     case 2:
@@ -142,7 +143,7 @@ public class Main extends JFrame implements KeyListener {
 
     public Main() {
         super();
-        terminal = new AsciiPanel(World.WIDTH, World.HEIGHT, AsciiFont.TALRYTH_15_15);
+        terminal = new AsciiPanel(World.WIDTH, World.HEIGHT, AsciiFont.MyUI_20_20);
         add(terminal);
         pack();
         addKeyListener(this);

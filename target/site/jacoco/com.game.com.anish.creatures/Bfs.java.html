@@ -7,51 +7,58 @@ import com.game.com.anish.maze.Node;
 public class Bfs {
     int[][] maze;
     ArrayList&lt;Integer&gt; plan;
-    int setx, sety;
-<span class="fc" id="L11">    Random rand = new Random();</span>
+<span class="pc" id="L10">    Random rand = new Random();</span>
+    Calabash[] player;
+    int target;
 
-<span class="fc" id="L13">    Bfs(int[][] maze) {</span>
-<span class="fc" id="L14">        this.maze = new int[maze.length][maze[0].length];</span>
-<span class="fc" id="L15">        plan = new ArrayList&lt;Integer&gt;();</span>
-<span class="fc" id="L16">        this.setx = -1;</span>
-<span class="fc" id="L17">        this.sety = -1;</span>
-<span class="fc" id="L18">    }</span>
+<span class="nc" id="L14">    Bfs(int[][] maze) {</span>
+<span class="nc" id="L15">        this.player = null;</span>
+<span class="nc" id="L16">        this.maze = new int[maze.length][maze[0].length];</span>
+<span class="nc" id="L17">        plan = new ArrayList&lt;Integer&gt;();</span>
+<span class="nc" id="L18">        target = -1;</span>
+<span class="nc" id="L19">    }</span>
+
+<span class="fc" id="L21">    Bfs(Calabash[] player, int[][] maze) {</span>
+<span class="fc" id="L22">        this.player = player;</span>
+<span class="fc" id="L23">        this.maze = new int[maze.length][maze[0].length];</span>
+<span class="fc" id="L24">        plan = new ArrayList&lt;Integer&gt;();</span>
+<span class="fc" id="L25">        target = -1;</span>
+<span class="fc" id="L26">    }</span>
 
     private void setmaze(int[][] maze) {
-<span class="fc bfc" id="L21" title="All 2 branches covered.">        for (int i = 0; i &lt; maze.length; ++i)</span>
-<span class="fc bfc" id="L22" title="All 2 branches covered.">            for (int j = 0; j &lt; maze[0].length; ++j)</span>
-<span class="fc" id="L23">                this.maze[i][j] = maze[i][j];</span>
-<span class="fc" id="L24">    }</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        for (int i = 0; i &lt; maze.length; ++i)</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">            for (int j = 0; j &lt; maze[0].length; ++j)</span>
+<span class="fc" id="L31">                this.maze[i][j] = maze[i][j];</span>
+<span class="fc" id="L32">    }</span>
 
-    public void makePlan(int[][] maze, int targetx, int targety, int curx, int cury) {
-        // System.out.println(&quot;makeplan&quot;);
-<span class="fc" id="L28">        clearPlan();</span>
-<span class="fc" id="L29">        setxy(targetx, targety);</span>
-<span class="fc" id="L30">        setmaze(maze);</span>
+    public void makePlan(int[][] maze, int curx, int cury) {
+<span class="fc" id="L35">        clearPlan();</span>
+<span class="fc" id="L36">        setmaze(maze);</span>
         ArrayList&lt;Node&gt; cur;
-<span class="fc" id="L32">        cur = new ArrayList&lt;Node&gt;();</span>
-<span class="fc" id="L33">        cur.add(new Node(curx, cury));</span>
-<span class="fc" id="L34">        this.maze[curx][cury] = -1;</span>
-<span class="fc" id="L35">        int depth = -2;</span>
-<span class="fc bfc" id="L36" title="All 2 branches covered.">        while (!cur.isEmpty()) {</span>
+<span class="fc" id="L38">        cur = new ArrayList&lt;Node&gt;();</span>
+<span class="fc" id="L39">        cur.add(new Node(curx, cury));</span>
+<span class="fc" id="L40">        this.maze[curx][cury] = -1;</span>
+<span class="fc" id="L41">        int depth = -2;</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        while (!cur.isEmpty()) {</span>
             ArrayList&lt;Node&gt; nxt;
-<span class="fc" id="L38">            nxt = new ArrayList&lt;Node&gt;();</span>
-<span class="fc" id="L39">            boolean flag = false;</span>
-<span class="fc bfc" id="L40" title="All 2 branches covered.">            for (int i = 0; i &lt; cur.size(); ++i) {</span>
-<span class="fc" id="L41">                int x = cur.get(i).x, y = cur.get(i).y;</span>
-<span class="fc bfc" id="L42" title="All 2 branches covered.">                if (is_close(targetx, targety, x, y)) {</span>
-<span class="fc" id="L43">                    this.maze[targetx][targety] = depth;</span>
-<span class="fc" id="L44">                    flag = true;</span>
-<span class="fc" id="L45">                    break;</span>
+<span class="fc" id="L44">            nxt = new ArrayList&lt;Node&gt;();</span>
+<span class="fc" id="L45">            boolean flag = false;</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">            for (int i = 0; i &lt; cur.size(); ++i) {</span>
+<span class="fc" id="L47">                int x = cur.get(i).x, y = cur.get(i).y;</span>
+<span class="fc" id="L48">                int idx = is_close(x, y);</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">                if (idx != -1) {</span>
+<span class="fc" id="L50">                    this.maze[player[idx].getX()][player[idx].getY()] = depth;</span>
+<span class="fc" id="L51">                    flag = true;</span>
+<span class="fc" id="L52">                    break;</span>
                 }
-<span class="fc" id="L47">                next(nxt, x, y, depth);</span>
+<span class="fc" id="L54">                next(nxt, x, y, depth);</span>
             }
-<span class="fc bfc" id="L49" title="All 2 branches covered.">            if (flag)</span>
-<span class="fc" id="L50">                break;</span>
-<span class="fc" id="L51">            cur.clear();</span>
-<span class="fc bfc" id="L52" title="All 2 branches covered.">            for (int i = 0; i &lt; nxt.size(); ++i)</span>
-<span class="fc" id="L53">                cur.add(nxt.get(i));</span>
-<span class="fc" id="L54">            --depth;</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">            if (flag)</span>
+<span class="fc" id="L57">                break;</span>
+<span class="fc" id="L58">            cur.clear();</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">            for (int i = 0; i &lt; nxt.size(); ++i)</span>
+<span class="fc" id="L60">                cur.add(nxt.get(i));</span>
+<span class="fc" id="L61">            --depth;</span>
             // for (int i = 0; i &lt; 30; ++i) {
             // for (int j = 0; j &lt; 30; ++j)
             // System.out.print(this.maze[i][j]);
@@ -59,165 +66,172 @@ public class Bfs {
             // }
             // System.out.println(depth);
         }
-<span class="fc bfc" id="L62" title="All 2 branches covered.">        if (this.maze[targetx][targety] &gt;= 0) {</span>
-<span class="fc" id="L63">            plan.add(randomwalk(curx, cury));</span>
-<span class="fc" id="L64">            return;</span>
+<span class="pc bpc" id="L69" title="1 of 4 branches missed.">        if (target == -1 || this.maze[player[target].getX()][player[target].getY()] &gt; 0) {</span>
+<span class="fc" id="L70">            plan.add(randomwalk(curx, cury));</span>
+<span class="fc" id="L71">            return;</span>
         }
-<span class="fc" id="L66">        int x = targetx, y = targety;</span>
-<span class="fc bfc" id="L67" title="All 2 branches covered.">        while (depth != -1) {</span>
-<span class="fc" id="L68">            ++depth;</span>
-<span class="fc bfc" id="L69" title="All 5 branches covered.">            switch (findway(depth, x, y)) {</span>
+<span class="fc" id="L73">        int x = player[target].getX(), y = player[target].getY();</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        while (depth != -1) {</span>
+<span class="fc" id="L75">            ++depth;</span>
+<span class="pc bpc" id="L76" title="1 of 5 branches missed.">            switch (findway(depth, x, y)) {</span>
                 case &quot;left&quot;:
-<span class="fc" id="L71">                    --x;</span>
-<span class="fc" id="L72">                    break;</span>
+<span class="fc" id="L78">                    --x;</span>
+<span class="fc" id="L79">                    break;</span>
                 case &quot;right&quot;:
-<span class="fc" id="L74">                    ++x;</span>
-<span class="fc" id="L75">                    break;</span>
+<span class="fc" id="L81">                    ++x;</span>
+<span class="fc" id="L82">                    break;</span>
                 case &quot;up&quot;:
-<span class="fc" id="L77">                    --y;</span>
-<span class="fc" id="L78">                    break;</span>
+<span class="nc" id="L84">                    --y;</span>
+<span class="nc" id="L85">                    break;</span>
                 case &quot;down&quot;:
-<span class="fc" id="L80">                    ++y;</span>
+<span class="fc" id="L87">                    ++y;</span>
                     break;
             }
         }
-<span class="fc" id="L84">    }</span>
+<span class="fc" id="L91">    }</span>
 
     public ArrayList&lt;Node&gt; getrange(int[][] maze, int curx, int cury, int radius) {
-<span class="nc" id="L87">        setmaze(maze);</span>
+<span class="nc" id="L94">        setmaze(maze);</span>
         ArrayList&lt;Node&gt; cur;
-<span class="nc" id="L89">        cur = new ArrayList&lt;Node&gt;();</span>
-<span class="nc" id="L90">        cur.add(new Node(curx, cury));</span>
-<span class="nc" id="L91">        this.maze[curx][cury] = -1;</span>
-<span class="nc" id="L92">        int depth = -1, i = 0;</span>
-<span class="nc bnc" id="L93" title="All 2 branches missed.">        for (; i &lt; cur.size(); ++i) {</span>
-<span class="nc" id="L94">            int x = cur.get(i).x, y = cur.get(i).y;</span>
-<span class="nc" id="L95">            depth = this.maze[x][y] - 1;</span>
-<span class="nc bnc" id="L96" title="All 2 branches missed.">            if (depth + radius &gt; -2)</span>
-<span class="nc" id="L97">                explode(cur, x, y, depth);</span>
+<span class="nc" id="L96">        cur = new ArrayList&lt;Node&gt;();</span>
+<span class="nc" id="L97">        cur.add(new Node(curx, cury));</span>
+<span class="nc" id="L98">        this.maze[curx][cury] = -1;</span>
+<span class="nc" id="L99">        int depth = -1, i = 0;</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">        for (; i &lt; cur.size(); ++i) {</span>
+<span class="nc" id="L101">            int x = cur.get(i).x, y = cur.get(i).y;</span>
+<span class="nc" id="L102">            depth = this.maze[x][y] - 1;</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">            if (depth + radius &gt; -2)</span>
+<span class="nc" id="L104">                explode(cur, x, y, depth);</span>
         }
 
-<span class="nc" id="L100">        return cur;</span>
+<span class="nc" id="L107">        return cur;</span>
     }
 
     private int randomwalk(int x, int y) {
-<span class="fc" id="L104">        ArrayList&lt;Integer&gt; able = new ArrayList&lt;Integer&gt;();</span>
-<span class="fc bfc" id="L105" title="All 4 branches covered.">        if (x &gt; 0 &amp;&amp; maze[x - 1][y] == -2)</span>
-<span class="fc" id="L106">            able.add(27);</span>
-<span class="fc bfc" id="L107" title="All 4 branches covered.">        if (x &lt; maze.length - 1 &amp;&amp; maze[x + 1][y] == -2)</span>
-<span class="fc" id="L108">            able.add(26);</span>
-<span class="fc bfc" id="L109" title="All 4 branches covered.">        if (y &gt; 0 &amp;&amp; maze[x][y - 1] == -2)</span>
-<span class="fc" id="L110">            able.add(24);</span>
-<span class="fc bfc" id="L111" title="All 4 branches covered.">        if (y &lt; maze[0].length - 1 &amp;&amp; maze[x][y + 1] == -2)</span>
-<span class="fc" id="L112">            able.add(25);</span>
-<span class="pc bpc" id="L113" title="1 of 2 branches missed.">        if (able.size() &gt; 0)</span>
-<span class="fc" id="L114">            return able.get(rand.nextInt(able.size()));</span>
-<span class="nc" id="L115">        return 24;</span>
+<span class="fc" id="L111">        ArrayList&lt;Integer&gt; able = new ArrayList&lt;Integer&gt;();</span>
+<span class="fc bfc" id="L112" title="All 4 branches covered.">        if (x &gt; 0 &amp;&amp; maze[x - 1][y] == -2)</span>
+<span class="fc" id="L113">            able.add(27);</span>
+<span class="fc bfc" id="L114" title="All 4 branches covered.">        if (x &lt; maze.length - 1 &amp;&amp; maze[x + 1][y] == -2)</span>
+<span class="fc" id="L115">            able.add(26);</span>
+<span class="fc bfc" id="L116" title="All 4 branches covered.">        if (y &gt; 0 &amp;&amp; maze[x][y - 1] == -2)</span>
+<span class="fc" id="L117">            able.add(24);</span>
+<span class="fc bfc" id="L118" title="All 4 branches covered.">        if (y &lt; maze[0].length - 1 &amp;&amp; maze[x][y + 1] == -2)</span>
+<span class="fc" id="L119">            able.add(25);</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">        if (able.size() &gt; 0)</span>
+<span class="fc" id="L121">            return able.get(rand.nextInt(able.size()));</span>
+<span class="nc" id="L122">        return 24;</span>
     }
 
     private void next(ArrayList&lt;Node&gt; nxt, int x, int y, int depth) {
-<span class="fc bfc" id="L119" title="All 4 branches covered.">        if (x &gt; 0 &amp;&amp; maze[x - 1][y] == 1) {</span>
-<span class="fc" id="L120">            maze[x - 1][y] = depth;</span>
-<span class="fc" id="L121">            nxt.add(new Node(x - 1, y));</span>
+<span class="fc bfc" id="L126" title="All 4 branches covered.">        if (x &gt; 0 &amp;&amp; maze[x - 1][y] == 1) {</span>
+<span class="fc" id="L127">            maze[x - 1][y] = depth;</span>
+<span class="fc" id="L128">            nxt.add(new Node(x - 1, y));</span>
         }
-<span class="fc bfc" id="L123" title="All 4 branches covered.">        if (x &lt; maze.length - 1 &amp;&amp; maze[x + 1][y] == 1) {</span>
-<span class="fc" id="L124">            maze[x + 1][y] = depth;</span>
-<span class="fc" id="L125">            nxt.add(new Node(x + 1, y));</span>
+<span class="fc bfc" id="L130" title="All 4 branches covered.">        if (x &lt; maze.length - 1 &amp;&amp; maze[x + 1][y] == 1) {</span>
+<span class="fc" id="L131">            maze[x + 1][y] = depth;</span>
+<span class="fc" id="L132">            nxt.add(new Node(x + 1, y));</span>
         }
-<span class="fc bfc" id="L127" title="All 4 branches covered.">        if (y &gt; 0 &amp;&amp; maze[x][y - 1] == 1) {</span>
-<span class="fc" id="L128">            maze[x][y - 1] = depth;</span>
-<span class="fc" id="L129">            nxt.add(new Node(x, y - 1));</span>
+<span class="fc bfc" id="L134" title="All 4 branches covered.">        if (y &gt; 0 &amp;&amp; maze[x][y - 1] == 1) {</span>
+<span class="fc" id="L135">            maze[x][y - 1] = depth;</span>
+<span class="fc" id="L136">            nxt.add(new Node(x, y - 1));</span>
         }
-<span class="fc bfc" id="L131" title="All 4 branches covered.">        if (y &lt; maze[0].length - 1 &amp;&amp; maze[x][y + 1] == 1) {</span>
-<span class="fc" id="L132">            maze[x][y + 1] = depth;</span>
-<span class="fc" id="L133">            nxt.add(new Node(x, y + 1));</span>
+<span class="fc bfc" id="L138" title="All 4 branches covered.">        if (y &lt; maze[0].length - 1 &amp;&amp; maze[x][y + 1] == 1) {</span>
+<span class="fc" id="L139">            maze[x][y + 1] = depth;</span>
+<span class="fc" id="L140">            nxt.add(new Node(x, y + 1));</span>
         }
-<span class="fc" id="L135">    }</span>
+<span class="fc" id="L142">    }</span>
 
     private void explode(ArrayList&lt;Node&gt; cur, int x, int y, int depth) {
-<span class="nc bnc" id="L138" title="All 2 branches missed.">        if (maze[x][y] == 1000)</span>
-<span class="nc" id="L139">            return;</span>
-<span class="nc bnc" id="L140" title="All 10 branches missed.">        if (x &gt; 0 &amp;&amp; ((maze[x - 1][y] &gt;= 0 &amp;&amp; maze[x - 1][y] &lt;= 3) || (maze[x - 1][y] &gt;= 5 &amp;&amp; maze[x - 1][y] &lt;= 7))) {</span>
-<span class="nc bnc" id="L141" title="All 2 branches missed.">            if (maze[x - 1][y] == 0)</span>
-<span class="nc" id="L142">                maze[x - 1][y] = 1000;</span>
-<span class="nc bnc" id="L143" title="All 2 branches missed.">            else if (maze[x - 1][y] == 3)</span>
-<span class="nc" id="L144">                maze[x - 1][y] = -1;</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">        if (maze[x][y] == 1000)</span>
+<span class="nc" id="L146">            return;</span>
+<span class="nc bnc" id="L147" title="All 10 branches missed.">        if (x &gt; 0 &amp;&amp; ((maze[x - 1][y] &gt;= 0 &amp;&amp; maze[x - 1][y] &lt;= 3) || (maze[x - 1][y] &gt;= 5 &amp;&amp; maze[x - 1][y] &lt;= 7))) {</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">            if (maze[x - 1][y] == 0)</span>
+<span class="nc" id="L149">                maze[x - 1][y] = 1000;</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">            else if (maze[x - 1][y] == 3)</span>
+<span class="nc" id="L151">                maze[x - 1][y] = -1;</span>
             else
-<span class="nc" id="L146">                maze[x - 1][y] = depth;</span>
-<span class="nc" id="L147">            cur.add(new Node(x - 1, y));</span>
+<span class="nc" id="L153">                maze[x - 1][y] = depth;</span>
+<span class="nc" id="L154">            cur.add(new Node(x - 1, y));</span>
         }
-<span class="nc bnc" id="L149" title="All 2 branches missed.">        if (x &lt; maze.length - 1</span>
-<span class="nc bnc" id="L150" title="All 8 branches missed.">                &amp;&amp; ((maze[x + 1][y] &gt;= 0 &amp;&amp; maze[x + 1][y] &lt;= 3) || (maze[x + 1][y] &gt;= 5 &amp;&amp; maze[x + 1][y] &lt;= 7))) {</span>
-<span class="nc bnc" id="L151" title="All 2 branches missed.">            if (maze[x + 1][y] == 0)</span>
-<span class="nc" id="L152">                maze[x + 1][y] = 1000;</span>
-<span class="nc bnc" id="L153" title="All 2 branches missed.">            else if (maze[x + 1][y] == 3)</span>
-<span class="nc" id="L154">                maze[x + 1][y] = -1;</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">        if (x &lt; maze.length - 1</span>
+<span class="nc bnc" id="L157" title="All 8 branches missed.">                &amp;&amp; ((maze[x + 1][y] &gt;= 0 &amp;&amp; maze[x + 1][y] &lt;= 3) || (maze[x + 1][y] &gt;= 5 &amp;&amp; maze[x + 1][y] &lt;= 7))) {</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">            if (maze[x + 1][y] == 0)</span>
+<span class="nc" id="L159">                maze[x + 1][y] = 1000;</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">            else if (maze[x + 1][y] == 3)</span>
+<span class="nc" id="L161">                maze[x + 1][y] = -1;</span>
             else
-<span class="nc" id="L156">                maze[x + 1][y] = depth;</span>
-<span class="nc" id="L157">            cur.add(new Node(x + 1, y));</span>
+<span class="nc" id="L163">                maze[x + 1][y] = depth;</span>
+<span class="nc" id="L164">            cur.add(new Node(x + 1, y));</span>
         }
-<span class="nc bnc" id="L159" title="All 10 branches missed.">        if (y &gt; 0 &amp;&amp; ((maze[x][y - 1] &gt;= 0 &amp;&amp; maze[x][y - 1] &lt;= 3) || (maze[x][y - 1] &gt;= 5 &amp;&amp; maze[x][y - 1] &lt;= 7))) {</span>
-<span class="nc bnc" id="L160" title="All 2 branches missed.">            if (maze[x][y - 1] == 0)</span>
-<span class="nc" id="L161">                maze[x][y - 1] = 1000;</span>
-<span class="nc bnc" id="L162" title="All 2 branches missed.">            else if (maze[x][y - 1] == 3)</span>
-<span class="nc" id="L163">                maze[x][y - 1] = -1;</span>
+<span class="nc bnc" id="L166" title="All 10 branches missed.">        if (y &gt; 0 &amp;&amp; ((maze[x][y - 1] &gt;= 0 &amp;&amp; maze[x][y - 1] &lt;= 3) || (maze[x][y - 1] &gt;= 5 &amp;&amp; maze[x][y - 1] &lt;= 7))) {</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">            if (maze[x][y - 1] == 0)</span>
+<span class="nc" id="L168">                maze[x][y - 1] = 1000;</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">            else if (maze[x][y - 1] == 3)</span>
+<span class="nc" id="L170">                maze[x][y - 1] = -1;</span>
             else
-<span class="nc" id="L165">                maze[x][y - 1] = depth;</span>
-<span class="nc" id="L166">            cur.add(new Node(x, y - 1));</span>
+<span class="nc" id="L172">                maze[x][y - 1] = depth;</span>
+<span class="nc" id="L173">            cur.add(new Node(x, y - 1));</span>
         }
-<span class="nc bnc" id="L168" title="All 2 branches missed.">        if (y &lt; maze[0].length - 1</span>
-<span class="nc bnc" id="L169" title="All 8 branches missed.">                &amp;&amp; ((maze[x][y + 1] &gt;= 0 &amp;&amp; maze[x][y + 1] &lt;= 3) || (maze[x][y + 1] &gt;= 5 &amp;&amp; maze[x][y + 1] &lt;= 7))) {</span>
-<span class="nc bnc" id="L170" title="All 2 branches missed.">            if (maze[x][y + 1] == 0)</span>
-<span class="nc" id="L171">                maze[x][y + 1] = 1000;</span>
-<span class="nc bnc" id="L172" title="All 2 branches missed.">            else if (maze[x][y + 1] == 3)</span>
-<span class="nc" id="L173">                maze[x][y + 1] = -1;</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">        if (y &lt; maze[0].length - 1</span>
+<span class="nc bnc" id="L176" title="All 8 branches missed.">                &amp;&amp; ((maze[x][y + 1] &gt;= 0 &amp;&amp; maze[x][y + 1] &lt;= 3) || (maze[x][y + 1] &gt;= 5 &amp;&amp; maze[x][y + 1] &lt;= 7))) {</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">            if (maze[x][y + 1] == 0)</span>
+<span class="nc" id="L178">                maze[x][y + 1] = 1000;</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">            else if (maze[x][y + 1] == 3)</span>
+<span class="nc" id="L180">                maze[x][y + 1] = -1;</span>
             else
-<span class="nc" id="L175">                maze[x][y + 1] = depth;</span>
-<span class="nc" id="L176">            cur.add(new Node(x, y + 1));</span>
+<span class="nc" id="L182">                maze[x][y + 1] = depth;</span>
+<span class="nc" id="L183">            cur.add(new Node(x, y + 1));</span>
         }
-<span class="nc" id="L178">    }</span>
+<span class="nc" id="L185">    }</span>
 
     private String findway(int depth, int x, int y) {
-<span class="fc" id="L181">        String pos = &quot;&quot;;</span>
-<span class="pc bpc" id="L182" title="1 of 4 branches missed.">        if (x &gt; 0 &amp;&amp; maze[x - 1][y] == depth) {</span>
-<span class="fc" id="L183">            pos = &quot;left&quot;;</span>
-<span class="fc" id="L184">            plan.add(0, 26);</span>
-<span class="pc bpc" id="L185" title="1 of 4 branches missed.">        } else if (x &lt; maze.length - 1 &amp;&amp; maze[x + 1][y] == depth) {</span>
-<span class="fc" id="L186">            pos = &quot;right&quot;;</span>
-<span class="fc" id="L187">            plan.add(0, 27);</span>
-<span class="pc bpc" id="L188" title="1 of 4 branches missed.">        } else if (y &gt; 0 &amp;&amp; maze[x][y - 1] == depth) {</span>
-<span class="fc" id="L189">            pos = &quot;up&quot;;</span>
-<span class="fc" id="L190">            plan.add(0, 25);</span>
-<span class="pc bpc" id="L191" title="2 of 4 branches missed.">        } else if (y &lt; maze[0].length &amp;&amp; maze[x][y + 1] == depth) {</span>
-<span class="fc" id="L192">            pos = &quot;down&quot;;</span>
-<span class="fc" id="L193">            plan.add(0, 24);</span>
+<span class="fc" id="L188">        String pos = &quot;&quot;;</span>
+<span class="pc bpc" id="L189" title="1 of 4 branches missed.">        if (x &gt; 0 &amp;&amp; maze[x - 1][y] == depth) {</span>
+<span class="fc" id="L190">            pos = &quot;left&quot;;</span>
+<span class="fc" id="L191">            plan.add(0, 26);</span>
+<span class="pc bpc" id="L192" title="1 of 4 branches missed.">        } else if (x &lt; maze.length - 1 &amp;&amp; maze[x + 1][y] == depth) {</span>
+<span class="fc" id="L193">            pos = &quot;right&quot;;</span>
+<span class="fc" id="L194">            plan.add(0, 27);</span>
+<span class="pc bpc" id="L195" title="2 of 4 branches missed.">        } else if (y &gt; 0 &amp;&amp; maze[x][y - 1] == depth) {</span>
+<span class="nc" id="L196">            pos = &quot;up&quot;;</span>
+<span class="nc" id="L197">            plan.add(0, 25);</span>
+<span class="pc bpc" id="L198" title="2 of 4 branches missed.">        } else if (y &lt; maze[0].length &amp;&amp; maze[x][y + 1] == depth) {</span>
+<span class="fc" id="L199">            pos = &quot;down&quot;;</span>
+<span class="fc" id="L200">            plan.add(0, 24);</span>
         }
         // for (int i = 0; i &lt; plan.size(); ++i)
         // System.out.print(plan.get(i) + &quot; &quot;);
         // System.out.println();
-<span class="fc" id="L198">        return pos;</span>
+<span class="fc" id="L205">        return pos;</span>
     }
 
-    private void setxy(int x, int y) {
-<span class="fc" id="L202">        this.setx = x;</span>
-<span class="fc" id="L203">        this.sety = y;</span>
-<span class="fc" id="L204">    }</span>
-
-    public boolean has_changed(int x, int y) {
-<span class="pc bpc" id="L207" title="1 of 4 branches missed.">        return !(this.setx == x &amp;&amp; this.sety == y);</span>
+    public int is_close(int x, int y) {
+<span class="fc bfc" id="L209" title="All 2 branches covered.">        for (int i = 0; i &lt; player.length; ++i)</span>
+<span class="fc bfc" id="L210" title="All 2 branches covered.">            if ((Math.abs(player[i].getX() - x) + Math.abs(player[i].getY() - y)) == 1) {</span>
+<span class="fc" id="L211">                set_target(i);</span>
+<span class="fc" id="L212">                return i;</span>
+            }
+<span class="fc" id="L214">        return -1;</span>
     }
 
-    public boolean is_close(int targetx, int targety, int x, int y) {
-<span class="fc bfc" id="L211" title="All 2 branches covered.">        return (Math.abs(targetx - x) + Math.abs(targety - y)) == 1;</span>
+    public int get_target(int x, int y) {
+<span class="fc bfc" id="L218" title="All 2 branches covered.">        if (target == -1)</span>
+<span class="fc" id="L219">            return -1;</span>
+<span class="pc bpc" id="L220" title="1 of 2 branches missed.">        if ((Math.abs(player[target].getX() - x) + Math.abs(player[target].getY() - y)) == 1)</span>
+<span class="nc" id="L221">            return target;</span>
+<span class="fc" id="L222">        return -1;</span>
     }
 
     public void clearPlan() {
-<span class="fc" id="L215">        plan.clear();</span>
-<span class="fc" id="L216">    }</span>
+<span class="fc" id="L226">        plan.clear();</span>
+<span class="fc" id="L227">    }</span>
 
     public ArrayList&lt;Integer&gt; getPlan() {
-<span class="fc" id="L219">        return plan;</span>
+<span class="fc" id="L230">        return plan;</span>
     }
 
+    public void set_target(int target) {
+<span class="fc" id="L234">        this.target = target;</span>
+<span class="fc" id="L235">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

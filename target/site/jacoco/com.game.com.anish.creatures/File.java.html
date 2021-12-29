@@ -14,100 +14,110 @@ public class File {
     ArrayList&lt;ArrayList&lt;Integer&gt;&gt; playerinfo;
     ArrayList&lt;ArrayList&lt;Integer&gt;&gt; monsterinfo;
     ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bombinfo;
-    String file;
+    String file, log;
 
 <span class="fc" id="L19">    public File() {</span>
+<span class="fc" id="L20">        playerinfo = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();</span>
+<span class="fc" id="L21">        log = new String();</span>
+<span class="fc" id="L22">        decode();</span>
+<span class="fc" id="L23">    }</span>
 
-<span class="fc" id="L21">    }</span>
-
-    private void getstatus(int[][] maze, Calabash[] player, Monster[] monster, ArrayList&lt;Bomb&gt; bomb) {
-<span class="fc" id="L24">        this.maze = maze;</span>
-<span class="fc" id="L25">        this.player = player;</span>
-<span class="fc" id="L26">        this.monster = monster;</span>
-<span class="fc" id="L27">        this.bomb = bomb;</span>
-<span class="fc" id="L28">    }</span>
+    private void getstatus(int[][] maze, Calabash[] player, Monster[] monster) {
+<span class="fc" id="L26">        this.maze = maze;</span>
+<span class="fc" id="L27">        this.player = player;</span>
+<span class="fc" id="L28">        this.monster = monster;</span>
+<span class="fc" id="L29">        bomb = new ArrayList&lt;Bomb&gt;();</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        for (Calabash p : player)</span>
+<span class="fc" id="L31">            bomb.addAll(p.bomblist);</span>
+<span class="fc" id="L32">    }</span>
 
     private void encode() {
-<span class="fc" id="L31">        file = new String();</span>
-<span class="fc" id="L32">        file += (char) maze.length;</span>
-<span class="fc" id="L33">        file += (char) maze[0].length;</span>
-<span class="fc bfc" id="L34" title="All 2 branches covered.">        for (int i = 0; i &lt; maze.length; ++i) {</span>
-<span class="fc bfc" id="L35" title="All 2 branches covered.">            for (int j = 0; j &lt; maze[i].length; ++j) {</span>
-<span class="pc bpc" id="L36" title="1 of 2 branches missed.">                if (maze[i][j] &gt; 10)</span>
-<span class="nc" id="L37">                    file += (char) 1;</span>
+<span class="fc" id="L35">        file = new String();</span>
+<span class="fc" id="L36">        file += (char) maze.length;</span>
+<span class="fc" id="L37">        file += (char) maze[0].length;</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        for (int i = 0; i &lt; maze.length; ++i) {</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">            for (int j = 0; j &lt; maze[i].length; ++j) {</span>
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">                if (maze[i][j] &gt; 10)</span>
+<span class="nc" id="L41">                    file += (char) 1;</span>
                 else
-<span class="fc" id="L39">                    file += (char) (maze[i][j]);</span>
+<span class="fc" id="L43">                    file += (char) (maze[i][j]);</span>
             }
         }
-<span class="fc" id="L42">        file += (char) player.length;</span>
+<span class="fc" id="L46">        file += (char) player.length;</span>
         // file += 'p';
-<span class="fc bfc" id="L44" title="All 2 branches covered.">        for (Calabash p : player) {</span>
-<span class="fc" id="L45">            file += (char) p.getX();</span>
-<span class="fc" id="L46">            file += (char) p.getY();</span>
-<span class="fc" id="L47">            file += (char) p.gethp();</span>
-<span class="fc" id="L48">            file += (char) (p.getbomb() + p.getbombing());</span>
-<span class="fc" id="L49">            file += (char) p.getmaxbomb();</span>
-<span class="fc" id="L50">            file += (char) p.getradius();</span>
+<span class="fc bfc" id="L48" title="All 2 branches covered.">        for (Calabash p : player) {</span>
+<span class="fc" id="L49">            file += (char) p.getX();</span>
+<span class="fc" id="L50">            file += (char) p.getY();</span>
+<span class="fc" id="L51">            file += (char) p.gethp();</span>
+<span class="fc" id="L52">            file += (char) (p.getbomb() + p.getbombing());</span>
+<span class="fc" id="L53">            file += (char) p.getmaxbomb();</span>
+<span class="fc" id="L54">            file += (char) p.getradius();</span>
         }
-<span class="fc" id="L52">        file += (char) monster.length;</span>
+<span class="fc" id="L56">        file += (char) monster.length;</span>
         // file += 'm';
-<span class="fc bfc" id="L54" title="All 2 branches covered.">        for (Monster m : monster) {</span>
-<span class="fc" id="L55">            file += (char) m.getX();</span>
-<span class="fc" id="L56">            file += (char) m.getY();</span>
-<span class="fc" id="L57">            file += (char) m.gethp();</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        for (Monster m : monster) {</span>
+<span class="fc" id="L59">            file += (char) m.getX();</span>
+<span class="fc" id="L60">            file += (char) m.getY();</span>
+<span class="fc" id="L61">            file += (char) m.gethp();</span>
         }
-<span class="fc" id="L59">        file += (char) bomb.size();</span>
-<span class="fc" id="L60">        long now = System.currentTimeMillis();</span>
-<span class="pc bpc" id="L61" title="1 of 2 branches missed.">        for (Bomb b : bomb) {</span>
-<span class="nc bnc" id="L62" title="All 2 branches missed.">            if (b.getstate() != 0)</span>
-<span class="nc" id="L63">                break;</span>
-<span class="nc" id="L64">            file += (char) b.getX();</span>
-<span class="nc" id="L65">            file += (char) b.getY();</span>
-<span class="nc" id="L66">            file += (char) b.getradius();</span>
-<span class="nc" id="L67">            file += (char) b.getplayernum();</span>
-<span class="nc" id="L68">            int sec = (int) b.getsec(now), milsec = (int) b.getmilsec(now);</span>
+<span class="fc" id="L63">        file += (char) bomb.size();</span>
+<span class="fc" id="L64">        long now = System.currentTimeMillis();</span>
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">        for (Bomb b : bomb) {</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">            if (b.getstate() != 0)</span>
+<span class="nc" id="L67">                break;</span>
+<span class="nc" id="L68">            file += (char) b.getX();</span>
+<span class="nc" id="L69">            file += (char) b.getY();</span>
+<span class="nc" id="L70">            file += (char) b.getradius();</span>
+<span class="nc" id="L71">            file += (char) b.getplayernum();</span>
+<span class="nc" id="L72">            int sec = (int) b.getsec(now), milsec = (int) b.getmilsec(now);</span>
             // System.out.println(sec);
             // System.out.println(milsec);
-<span class="nc" id="L71">            int hsec = sec / 100, hmilsec = milsec / 100;</span>
-<span class="nc" id="L72">            sec %= 100;</span>
-<span class="nc" id="L73">            milsec %= 100;</span>
-<span class="nc" id="L74">            file += (char) hsec;</span>
-<span class="nc" id="L75">            file += (char) sec;</span>
-<span class="nc" id="L76">            file += (char) hmilsec;</span>
-<span class="nc" id="L77">            file += (char) milsec;</span>
+<span class="nc" id="L75">            int hsec = sec / 100, hmilsec = milsec / 100;</span>
+<span class="nc" id="L76">            sec %= 100;</span>
+<span class="nc" id="L77">            milsec %= 100;</span>
+<span class="nc" id="L78">            file += (char) hsec;</span>
+<span class="nc" id="L79">            file += (char) sec;</span>
+<span class="nc" id="L80">            file += (char) hmilsec;</span>
+<span class="nc" id="L81">            file += (char) milsec;</span>
         }
-<span class="fc" id="L79">    }</span>
+<span class="fc" id="L83">    }</span>
 
-    public void writelog(int[][] maze, Calabash[] player, Monster[] monster, ArrayList&lt;Bomb&gt; bomb) {
-<span class="fc" id="L82">        getstatus(maze, player, monster, bomb);</span>
-<span class="fc" id="L83">        encode();</span>
+    public void writelog(int[][] maze, Calabash[] player, Monster[] monster) {
+<span class="fc" id="L86">        getstatus(maze, player, monster);</span>
+<span class="fc" id="L87">        encode();</span>
         try {
-<span class="fc" id="L85">            FileOutputStream fos = new FileOutputStream(&quot;src/main/java/resources/log.txt&quot;);</span>
-<span class="fc" id="L86">            BufferedOutputStream bos = new BufferedOutputStream(fos);</span>
-<span class="fc" id="L87">            bos.write(file.getBytes(), 0, file.getBytes().length);</span>
-<span class="fc" id="L88">            bos.flush();</span>
-<span class="fc" id="L89">            bos.close();</span>
-<span class="pc" id="L90">        } catch (Exception e) {</span>
-<span class="nc" id="L91">            e.printStackTrace();</span>
+<span class="fc" id="L89">            FileOutputStream fos = new FileOutputStream(&quot;save/log.txt&quot;);</span>
+<span class="fc" id="L90">            BufferedOutputStream bos = new BufferedOutputStream(fos);</span>
+<span class="fc" id="L91">            bos.write(file.getBytes(), 0, file.getBytes().length);</span>
+<span class="fc" id="L92">            bos.flush();</span>
+<span class="fc" id="L93">            bos.close();</span>
+<span class="pc" id="L94">        } catch (Exception e) {</span>
+<span class="nc" id="L95">            e.printStackTrace();</span>
         }
-<span class="fc" id="L93">    }</span>
+<span class="fc" id="L97">    }</span>
+
+    public int getplayernum() {
+<span class="fc" id="L100">        return playerinfo.size();</span>
+    }
 
     public void decode() {
         try {
-<span class="fc" id="L97">            FileInputStream fis = new FileInputStream(&quot;src/main/java/resources/log.txt&quot;);</span>
-<span class="fc" id="L98">            int a = fis.read(), b = fis.read();</span>
-<span class="fc" id="L99">            maze = new int[a][b];</span>
-<span class="fc bfc" id="L100" title="All 2 branches covered.">            for (int i = 0; i &lt; a; ++i)</span>
-<span class="fc bfc" id="L101" title="All 2 branches covered.">                for (int j = 0; j &lt; b; ++j)</span>
-<span class="fc" id="L102">                    maze[i][j] = fis.read();</span>
+<span class="fc" id="L105">            FileInputStream fis = new FileInputStream(&quot;save/log.txt&quot;);</span>
+<span class="fc" id="L106">            int a = fis.read(), b = fis.read();</span>
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">            if (a == -1)</span>
+<span class="nc" id="L108">                return;</span>
+<span class="fc" id="L109">            maze = new int[a][b];</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">            for (int i = 0; i &lt; a; ++i)</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">                for (int j = 0; j &lt; b; ++j)</span>
+<span class="fc" id="L112">                    maze[i][j] = fis.read();</span>
 
-<span class="fc" id="L104">            a = fis.read();</span>
-<span class="fc" id="L105">            playerinfo = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();</span>
-<span class="fc bfc" id="L106" title="All 2 branches covered.">            for (int i = 0; i &lt; a; ++i) {</span>
-<span class="fc" id="L107">                ArrayList&lt;Integer&gt; temp = new ArrayList&lt;Integer&gt;();</span>
-<span class="fc bfc" id="L108" title="All 2 branches covered.">                for (int j = 0; j &lt; 6; ++j)</span>
-<span class="fc" id="L109">                    temp.add(fis.read());</span>
-<span class="fc" id="L110">                playerinfo.add(temp);</span>
+<span class="fc" id="L114">            a = fis.read();</span>
+<span class="fc" id="L115">            playerinfo = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">            for (int i = 0; i &lt; a; ++i) {</span>
+<span class="fc" id="L117">                ArrayList&lt;Integer&gt; temp = new ArrayList&lt;Integer&gt;();</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">                for (int j = 0; j &lt; 6; ++j)</span>
+<span class="fc" id="L119">                    temp.add(fis.read());</span>
+<span class="fc" id="L120">                playerinfo.add(temp);</span>
             }
             // for(int i=0;i &lt; playerinfo.size();++i){
             // for(int j=0;j&lt;playerinfo.get(i).size();++j){
@@ -116,119 +126,54 @@ public class File {
             // }
             // System.out.println();
             // }
-<span class="fc" id="L119">            a = fis.read();</span>
-<span class="fc" id="L120">            monsterinfo = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();</span>
-<span class="fc bfc" id="L121" title="All 2 branches covered.">            for (int i = 0; i &lt; a; ++i) {</span>
-<span class="fc" id="L122">                ArrayList&lt;Integer&gt; temp = new ArrayList&lt;Integer&gt;();</span>
-<span class="fc bfc" id="L123" title="All 2 branches covered.">                for (int j = 0; j &lt; 3; ++j)</span>
-<span class="fc" id="L124">                    temp.add(fis.read());</span>
-<span class="fc" id="L125">                monsterinfo.add(temp);</span>
+<span class="fc" id="L129">            a = fis.read();</span>
+<span class="fc" id="L130">            monsterinfo = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">            for (int i = 0; i &lt; a; ++i) {</span>
+<span class="fc" id="L132">                ArrayList&lt;Integer&gt; temp = new ArrayList&lt;Integer&gt;();</span>
+<span class="fc bfc" id="L133" title="All 2 branches covered.">                for (int j = 0; j &lt; 3; ++j)</span>
+<span class="fc" id="L134">                    temp.add(fis.read());</span>
+<span class="fc" id="L135">                monsterinfo.add(temp);</span>
             }
 
             // for (int i = 0; i &lt; monsterinfo.size(); ++i) {
-            //     for (int j = 0; j &lt; monsterinfo.get(i).size(); ++j) {
-            //         System.out.print(monsterinfo.get(i).get(j));
-            //         System.out.print(' ');
-            //     }
-            //     System.out.println();
+            // for (int j = 0; j &lt; monsterinfo.get(i).size(); ++j) {
+            // System.out.print(monsterinfo.get(i).get(j));
+            // System.out.print(' ');
+            // }
+            // System.out.println();
             // }
 
-<span class="fc" id="L136">            a = fis.read();</span>
-<span class="fc" id="L137">            bombinfo = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();</span>
-<span class="pc bpc" id="L138" title="1 of 2 branches missed.">            for (int i = 0; i &lt; a; ++i) {</span>
-<span class="nc" id="L139">                ArrayList&lt;Integer&gt; temp = new ArrayList&lt;Integer&gt;();</span>
-<span class="nc bnc" id="L140" title="All 2 branches missed.">                for (int j = 0; j &lt; 4; ++j)</span>
-<span class="nc" id="L141">                    temp.add(fis.read());</span>
-<span class="nc bnc" id="L142" title="All 2 branches missed.">                if (temp.get(0) == -1)</span>
-<span class="nc" id="L143">                    break;</span>
-<span class="nc bnc" id="L144" title="All 2 branches missed.">                for (int j = 0; j &lt; 2; ++j)</span>
-<span class="nc" id="L145">                    temp.add(fis.read() * 100 + fis.read());</span>
-<span class="nc" id="L146">                bombinfo.add(temp);</span>
+<span class="fc" id="L146">            a = fis.read();</span>
+<span class="fc" id="L147">            bombinfo = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();</span>
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">            for (int i = 0; i &lt; a; ++i) {</span>
+<span class="nc" id="L149">                ArrayList&lt;Integer&gt; temp = new ArrayList&lt;Integer&gt;();</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">                for (int j = 0; j &lt; 4; ++j)</span>
+<span class="nc" id="L151">                    temp.add(fis.read());</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">                if (temp.get(0) == -1)</span>
+<span class="nc" id="L153">                    break;</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">                for (int j = 0; j &lt; 2; ++j)</span>
+<span class="nc" id="L155">                    temp.add(fis.read() * 100 + fis.read());</span>
+<span class="nc" id="L156">                bombinfo.add(temp);</span>
             }
-
-            // for (int i = 0; i &lt; bombinfo.size(); ++i) {
-            // for (int j = 0; j &lt; bombinfo.get(i).size(); ++j) {
-            // System.out.print(bombinfo.get(i).get(j));
-            // System.out.print(' ');
-            // }
-            // System.out.println();
-            // }
-
-            // while (n != -1 &amp;&amp; (char) n != 'p') {
-            // System.out.print(n);
-            // System.out.print(' ');
-            // n = fis.read();
-            // ++cnt;
-            // if (cnt == 30) {
-            // System.out.println();
-            // cnt = 0;
-            // }
-            // }
-            // System.out.println((char) n);
-            // n = fis.read();
-            // while (n != -1 &amp;&amp; (char) n != 'm') {
-            // System.out.print(n);
-            // System.out.print(' ');
-            // n = fis.read();
-            // ++cnt;
-            // if (cnt == 6) {
-            // System.out.println();
-            // cnt = 0;
-            // }
-            // }
-            // System.out.println((char) n);
-            // n = fis.read();
-            // while (n != -1 &amp;&amp; (char) n != 'b') {
-            // System.out.print(n);
-            // System.out.print(' ');
-            // n = fis.read();
-            // ++cnt;
-            // if (cnt == 3) {
-            // System.out.println();
-            // cnt = 0;
-            // }
-            // }
-            // System.out.println((char) n);
-            // n = fis.read();
-            // int num = 0;
-            // while (n != -1) {
-            // if (cnt == 3 || cnt == 5)
-            // num = n * 100;
-            // else {
-            // if (cnt == 4 || cnt == 6) {
-            // num += n;
-            // System.out.print(num);
-            // } else
-            // System.out.print(n);
-            // System.out.print(' ');
-            // }
-            // n = fis.read();
-            // ++cnt;
-            // if (cnt == 7) {
-            // System.out.println();
-            // cnt = 0;
-            // }
-            // }
-
-<span class="pc" id="L213">        } catch (Exception e) {</span>
-<span class="nc" id="L214">            e.printStackTrace();</span>
+<span class="pc" id="L158">        } catch (Exception e) {</span>
+<span class="nc" id="L159">            e.printStackTrace();</span>
         }
-<span class="fc" id="L216">    }</span>
+<span class="fc" id="L161">    }</span>
 
     public int[][] getmaze() {
-<span class="fc" id="L219">        return maze;</span>
+<span class="fc" id="L164">        return maze;</span>
     }
 
     public ArrayList&lt;ArrayList&lt;Integer&gt;&gt; getplayer() {
-<span class="fc" id="L223">        return playerinfo;</span>
+<span class="fc" id="L168">        return playerinfo;</span>
     }
 
     public ArrayList&lt;ArrayList&lt;Integer&gt;&gt; getmonster() {
-<span class="fc" id="L227">        return monsterinfo;</span>
+<span class="fc" id="L172">        return monsterinfo;</span>
     }
 
     public ArrayList&lt;ArrayList&lt;Integer&gt;&gt; getbomb() {
-<span class="fc" id="L231">        return bombinfo;</span>
+<span class="fc" id="L176">        return bombinfo;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

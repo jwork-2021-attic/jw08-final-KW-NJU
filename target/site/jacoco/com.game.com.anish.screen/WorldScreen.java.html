@@ -33,303 +33,549 @@ public class WorldScreen implements Screen {
     int pnum, mnum, mnum0;
     int start;
     File file;
-<span class="fc" id="L36">    int cnt = 0;</span>
+    int cnt;
+    int playerid;
+    int lasttime;
 
-<span class="fc" id="L38">    public WorldScreen() {</span>
-<span class="fc" id="L39">        dimension = 30;</span>
-<span class="fc" id="L40">        pnum = 1;</span>
-<span class="fc" id="L41">        mnum = 8;</span>
-<span class="fc" id="L42">        mnum0 = mnum;</span>
-<span class="fc" id="L43">        start = 1;</span>
-<span class="fc" id="L44">        startgame();</span>
-<span class="fc" id="L45">    }</span>
+<span class="fc" id="L40">    public WorldScreen() {</span>
+<span class="fc" id="L41">        dimension = 30;</span>
+<span class="fc" id="L42">        pnum = 0;</span>
+<span class="fc" id="L43">        mnum = 9;</span>
+<span class="fc" id="L44">        mnum0 = mnum;</span>
+<span class="fc" id="L45">        start = 1;</span>
+<span class="fc" id="L46">        file = new File();</span>
+<span class="fc" id="L47">        cnt = 0;</span>
+<span class="fc" id="L48">        playerid = 0;</span>
+<span class="fc" id="L49">        lasttime = file.getplayernum();</span>
+<span class="fc" id="L50">        startgame();</span>
+<span class="fc" id="L51">    }</span>
 
     public void startgame() {
-<span class="fc" id="L48">        world = new World();</span>
-<span class="fc bfc" id="L49" title="All 2 branches covered.">        for (int i = 0; i &lt; 30; ++i)</span>
-<span class="fc bfc" id="L50" title="All 2 branches covered.">            for (int j = 0; j &lt; 32; ++j)</span>
-<span class="fc" id="L51">                world.put(new Character(world, ' '), i, j);</span>
-<span class="fc" id="L52">        world.put(new Character(world, (char) 16), 10, 13);</span>
-<span class="fc" id="L53">        world.put(new Character(world, 'N'), 11, 13);</span>
-<span class="fc" id="L54">        world.put(new Character(world, 'E'), 12, 13);</span>
-<span class="fc" id="L55">        world.put(new Character(world, 'W'), 13, 13);</span>
-<span class="fc" id="L56">        world.put(new Character(world, 'G'), 15, 13);</span>
-<span class="fc" id="L57">        world.put(new Character(world, 'A'), 16, 13);</span>
-<span class="fc" id="L58">        world.put(new Character(world, 'M'), 17, 13);</span>
-<span class="fc" id="L59">        world.put(new Character(world, 'E'), 18, 13);</span>
-<span class="fc" id="L60">        world.put(new Character(world, 'C'), 11, 17);</span>
-<span class="fc" id="L61">        world.put(new Character(world, 'O'), 12, 17);</span>
-<span class="fc" id="L62">        world.put(new Character(world, 'N'), 13, 17);</span>
-<span class="fc" id="L63">        world.put(new Character(world, 'T'), 14, 17);</span>
-<span class="fc" id="L64">        world.put(new Character(world, 'I'), 15, 17);</span>
-<span class="fc" id="L65">        world.put(new Character(world, 'N'), 16, 17);</span>
-<span class="fc" id="L66">        world.put(new Character(world, 'U'), 17, 17);</span>
-<span class="fc" id="L67">        world.put(new Character(world, 'E'), 18, 17);</span>
-<span class="fc" id="L68">    }</span>
+<span class="fc" id="L54">        world = new World();</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        for (int i = 0; i &lt; World.WIDTH; ++i)</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">            for (int j = 0; j &lt; World.HEIGHT; ++j)</span>
+<span class="fc" id="L57">                world.put(new Character(world, ' '), i, j);</span>
+<span class="fc" id="L58">        world.put(new Character(world, 'C'), 11, 6);</span>
+<span class="fc" id="L59">        world.put(new Character(world, 'A'), 12, 6);</span>
+<span class="fc" id="L60">        world.put(new Character(world, 'L'), 13, 6);</span>
+<span class="fc" id="L61">        world.put(new Character(world, 'A'), 14, 6);</span>
+<span class="fc" id="L62">        world.put(new Character(world, 'B'), 15, 6);</span>
+<span class="fc" id="L63">        world.put(new Character(world, 'A'), 16, 6);</span>
+<span class="fc" id="L64">        world.put(new Character(world, 'S'), 17, 6);</span>
+<span class="fc" id="L65">        world.put(new Character(world, 'H'), 18, 6);</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        for (int i = 11; i &lt; 19; ++i)</span>
+<span class="fc" id="L67">            world.put(new Character(world, '-'), i, 7);</span>
+<span class="fc" id="L68">        world.put(new Character(world, 'B'), 11, 8);</span>
+<span class="fc" id="L69">        world.put(new Character(world, 'O'), 12, 8);</span>
+<span class="fc" id="L70">        world.put(new Character(world, 'M'), 13, 8);</span>
+<span class="fc" id="L71">        world.put(new Character(world, 'B'), 14, 8);</span>
+<span class="fc" id="L72">        world.put(new Character(world, 'M'), 16, 8);</span>
+<span class="fc" id="L73">        world.put(new Character(world, 'A'), 17, 8);</span>
+<span class="fc" id="L74">        world.put(new Character(world, 'N'), 18, 8);</span>
+
+<span class="fc" id="L76">        world.put(new Character(world, (char) 102), 11, 10);</span>
+<span class="fc" id="L77">        world.put(new Character(world, (char) 103), 12, 10);</span>
+<span class="fc" id="L78">        world.put(new Character(world, (char) 101), 13, 10);</span>
+<span class="fc" id="L79">        world.put(new Character(world, (char) 106), 14, 10);</span>
+<span class="fc" id="L80">        world.put(new Character(world, (char) 107), 15, 10);</span>
+<span class="fc" id="L81">        world.put(new Character(world, (char) 108), 16, 10);</span>
+<span class="fc" id="L82">        world.put(new Character(world, (char) 104), 17, 10);</span>
+<span class="fc" id="L83">        world.put(new Character(world, (char) 105), 18, 10);</span>
+
+<span class="fc" id="L85">        world.put(new Character(world, (char) 16), 10, 14);</span>
+<span class="fc" id="L86">        world.put(new Character(world, (char) 17), 19, 14);</span>
+<span class="fc" id="L87">        world.put(new Character(world, 'N'), 11, 14);</span>
+<span class="fc" id="L88">        world.put(new Character(world, 'E'), 12, 14);</span>
+<span class="fc" id="L89">        world.put(new Character(world, 'W'), 13, 14);</span>
+<span class="fc" id="L90">        world.put(new Character(world, 'G'), 15, 14);</span>
+<span class="fc" id="L91">        world.put(new Character(world, 'A'), 16, 14);</span>
+<span class="fc" id="L92">        world.put(new Character(world, 'M'), 17, 14);</span>
+<span class="fc" id="L93">        world.put(new Character(world, 'E'), 18, 14);</span>
+<span class="fc" id="L94">        world.put(new Character(world, 'C'), 11, 17);</span>
+<span class="fc" id="L95">        world.put(new Character(world, 'O'), 12, 17);</span>
+<span class="fc" id="L96">        world.put(new Character(world, 'N'), 13, 17);</span>
+<span class="fc" id="L97">        world.put(new Character(world, 'T'), 14, 17);</span>
+<span class="fc" id="L98">        world.put(new Character(world, 'I'), 15, 17);</span>
+<span class="fc" id="L99">        world.put(new Character(world, 'N'), 16, 17);</span>
+<span class="fc" id="L100">        world.put(new Character(world, 'U'), 17, 17);</span>
+<span class="fc" id="L101">        world.put(new Character(world, 'E'), 18, 17);</span>
+
+<span class="fc" id="L103">        world.put(new Character(world, '('), 5, 18);</span>
+<span class="fc" id="L104">        world.put(new Character(world, 'O'), 6, 18);</span>
+<span class="fc" id="L105">        world.put(new Character(world, 'N'), 7, 18);</span>
+<span class="fc" id="L106">        world.put(new Character(world, 'L'), 8, 18);</span>
+<span class="fc" id="L107">        world.put(new Character(world, 'Y'), 9, 18);</span>
+<span class="fc" id="L108">        world.put(new Character(world, 'A'), 11, 18);</span>
+<span class="fc" id="L109">        world.put(new Character(world, 'V'), 12, 18);</span>
+<span class="fc" id="L110">        world.put(new Character(world, 'A'), 13, 18);</span>
+<span class="fc" id="L111">        world.put(new Character(world, 'I'), 14, 18);</span>
+<span class="fc" id="L112">        world.put(new Character(world, 'L'), 15, 18);</span>
+<span class="fc" id="L113">        world.put(new Character(world, 'A'), 16, 18);</span>
+<span class="fc" id="L114">        world.put(new Character(world, 'B'), 17, 18);</span>
+<span class="fc" id="L115">        world.put(new Character(world, 'L'), 18, 18);</span>
+<span class="fc" id="L116">        world.put(new Character(world, 'E'), 19, 18);</span>
+<span class="fc" id="L117">        world.put(new Character(world, 'W'), 21, 18);</span>
+<span class="fc" id="L118">        world.put(new Character(world, 'H'), 22, 18);</span>
+<span class="fc" id="L119">        world.put(new Character(world, 'E'), 23, 18);</span>
+<span class="fc" id="L120">        world.put(new Character(world, 'N'), 24, 18);</span>
+<span class="fc" id="L121">        world.put(new Character(world, 'C'), 9, 19);</span>
+<span class="fc" id="L122">        world.put(new Character(world, 'U'), 10, 19);</span>
+<span class="fc" id="L123">        world.put(new Character(world, 'R'), 11, 19);</span>
+<span class="fc" id="L124">        world.put(new Character(world, 'R'), 12, 19);</span>
+<span class="fc" id="L125">        world.put(new Character(world, 'E'), 13, 19);</span>
+<span class="fc" id="L126">        world.put(new Character(world, 'N'), 14, 19);</span>
+<span class="fc" id="L127">        world.put(new Character(world, 'T'), 15, 19);</span>
+<span class="fc" id="L128">        world.put(new Character(world, '='), 16, 19);</span>
+<span class="fc" id="L129">        world.put(new Character(world, 'L'), 17, 19);</span>
+<span class="fc" id="L130">        world.put(new Character(world, 'A'), 18, 19);</span>
+<span class="fc" id="L131">        world.put(new Character(world, 'S'), 19, 19);</span>
+<span class="fc" id="L132">        world.put(new Character(world, 'T'), 20, 19);</span>
+<span class="fc" id="L133">        world.put(new Character(world, ')'), 21, 19);</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">        for (int i = 9; i &lt; 21; ++i)</span>
+<span class="fc" id="L135">            world.put(new Character(world, '-'), i, 22);</span>
+<span class="fc" id="L136">        world.put(new Character(world, 'C'), 7, 25);</span>
+<span class="fc" id="L137">        world.put(new Character(world, 'U'), 8, 25);</span>
+<span class="fc" id="L138">        world.put(new Character(world, 'R'), 9, 25);</span>
+<span class="fc" id="L139">        world.put(new Character(world, 'R'), 10, 25);</span>
+<span class="fc" id="L140">        world.put(new Character(world, 'E'), 11, 25);</span>
+<span class="fc" id="L141">        world.put(new Character(world, 'N'), 12, 25);</span>
+<span class="fc" id="L142">        world.put(new Character(world, 'T'), 13, 25);</span>
+<span class="fc" id="L143">        world.put(new Character(world, 'P'), 15, 25);</span>
+<span class="fc" id="L144">        world.put(new Character(world, 'L'), 16, 25);</span>
+<span class="fc" id="L145">        world.put(new Character(world, 'A'), 17, 25);</span>
+<span class="fc" id="L146">        world.put(new Character(world, 'Y'), 18, 25);</span>
+<span class="fc" id="L147">        world.put(new Character(world, 'E'), 19, 25);</span>
+<span class="fc" id="L148">        world.put(new Character(world, 'R'), 20, 25);</span>
+<span class="fc" id="L149">        world.put(new Character(world, ':'), 21, 25);</span>
+<span class="fc" id="L150">        world.put(new Character(world, (char) (pnum + '0')), 22, 25);</span>
+<span class="fc" id="L151">        world.put(new Character(world, 'L'), 10, 26);</span>
+<span class="fc" id="L152">        world.put(new Character(world, 'A'), 11, 26);</span>
+<span class="fc" id="L153">        world.put(new Character(world, 'S'), 12, 26);</span>
+<span class="fc" id="L154">        world.put(new Character(world, 'T'), 13, 26);</span>
+<span class="fc" id="L155">        world.put(new Character(world, 'T'), 15, 26);</span>
+<span class="fc" id="L156">        world.put(new Character(world, 'I'), 16, 26);</span>
+<span class="fc" id="L157">        world.put(new Character(world, 'M'), 17, 26);</span>
+<span class="fc" id="L158">        world.put(new Character(world, 'E'), 18, 26);</span>
+<span class="fc" id="L159">        world.put(new Character(world, ':'), 19, 26);</span>
+<span class="fc" id="L160">        world.put(new Character(world, (char) (lasttime + '0')), 20, 26);</span>
+<span class="fc" id="L161">        world.put(new Character(world, 'B'), 8, 30);</span>
+<span class="fc" id="L162">        world.put(new Character(world, 'Y'), 9, 30);</span>
+<span class="fc" id="L163">        world.put(new Character(world, '1'), 11, 30);</span>
+<span class="fc" id="L164">        world.put(new Character(world, '9'), 12, 30);</span>
+<span class="fc" id="L165">        world.put(new Character(world, '1'), 13, 30);</span>
+<span class="fc" id="L166">        world.put(new Character(world, '2'), 14, 30);</span>
+<span class="fc" id="L167">        world.put(new Character(world, '2'), 15, 30);</span>
+<span class="fc" id="L168">        world.put(new Character(world, '0'), 16, 30);</span>
+<span class="fc" id="L169">        world.put(new Character(world, '1'), 17, 30);</span>
+<span class="fc" id="L170">        world.put(new Character(world, '0'), 18, 30);</span>
+<span class="fc" id="L171">        world.put(new Character(world, '9'), 19, 30);</span>
+<span class="fc" id="L172">        world.put(new Character(world, 'K'), 21, 30);</span>
+<span class="fc" id="L173">        world.put(new Character(world, 'W'), 22, 30);</span>
+<span class="fc" id="L174">        world.put(new Character(world, 'F'), 10, 31);</span>
+<span class="fc" id="L175">        world.put(new Character(world, 'R'), 11, 31);</span>
+<span class="fc" id="L176">        world.put(new Character(world, 'O'), 12, 31);</span>
+<span class="fc" id="L177">        world.put(new Character(world, 'M'), 13, 31);</span>
+<span class="fc" id="L178">        world.put(new Character(world, 'N'), 16, 31);</span>
+<span class="fc" id="L179">        world.put(new Character(world, 'J'), 17, 31);</span>
+<span class="fc" id="L180">        world.put(new Character(world, 'U'), 18, 31);</span>
+<span class="fc" id="L181">        world.put(new Character(world, 'C'), 19, 31);</span>
+<span class="fc" id="L182">        world.put(new Character(world, 'S'), 20, 31);</span>
+
+<span class="fc" id="L184">    }</span>
 
     public void newgame() {
-<span class="fc" id="L71">        player = new Calabash[pnum];</span>
-<span class="fc" id="L72">        monster = new Monster[mnum];</span>
-<span class="fc" id="L73">        bomb = new ArrayList&lt;Bomb&gt;();</span>
-<span class="fc" id="L74">        file = new File();</span>
-<span class="fc" id="L75">        world = new World();</span>
-<span class="fc" id="L76">        playerlist = new ArrayList&lt;Node&gt;();</span>
-<span class="fc" id="L77">        rand = new Random();</span>
-<span class="fc" id="L78">        randomaddplayer();</span>
-<span class="fc" id="L79">        init_world();</span>
-<span class="fc" id="L80">        exec = Executors.newCachedThreadPool();</span>
-<span class="fc" id="L81">        init_creature();</span>
-<span class="fc" id="L82">        exec.shutdown();</span>
-<span class="fc" id="L83">    }</span>
+<span class="fc" id="L187">        player = new Calabash[pnum];</span>
+<span class="fc" id="L188">        monster = new Monster[mnum];</span>
+<span class="fc" id="L189">        bomb = new ArrayList&lt;Bomb&gt;();</span>
+<span class="fc" id="L190">        world = new World();</span>
+<span class="fc" id="L191">        playerlist = new ArrayList&lt;Node&gt;();</span>
+<span class="fc" id="L192">        rand = new Random();</span>
+<span class="fc" id="L193">        randomaddplayer();</span>
+<span class="fc" id="L194">        init_world();</span>
+<span class="fc" id="L195">        exec = Executors.newCachedThreadPool();</span>
+<span class="fc" id="L196">        init_creature();</span>
+<span class="fc" id="L197">        exec.shutdown();</span>
+<span class="fc" id="L198">    }</span>
 
     public void oldgame() {
-<span class="fc" id="L86">        player = new Calabash[pnum];</span>
-<span class="fc" id="L87">        monster = new Monster[mnum];</span>
-<span class="fc" id="L88">        bomb = new ArrayList&lt;Bomb&gt;();</span>
-<span class="fc" id="L89">        file = new File();</span>
-<span class="fc" id="L90">        file.decode();</span>
-<span class="fc" id="L91">        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; playerinfo = file.getplayer();</span>
-<span class="fc" id="L92">        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; monsterinfo = file.getmonster();</span>
-<span class="fc" id="L93">        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bombinfo = file.getbomb();</span>
-<span class="fc" id="L94">        getkilled(monsterinfo);</span>
-<span class="fc" id="L95">        Monster.setcnt(mnum0, mnum);</span>
-<span class="fc" id="L96">        world = new World();</span>
-<span class="fc" id="L97">        recover_world(playerinfo);</span>
-<span class="fc" id="L98">        exec = Executors.newCachedThreadPool();</span>
-<span class="fc" id="L99">        recover_creature(playerinfo, monsterinfo);</span>
-<span class="fc" id="L100">        recover_bomb(bombinfo);</span>
-<span class="fc" id="L101">        exec.shutdown();</span>
-<span class="fc" id="L102">    }</span>
+<span class="fc" id="L201">        player = new Calabash[pnum];</span>
+<span class="fc" id="L202">        monster = new Monster[mnum];</span>
+<span class="fc" id="L203">        bomb = new ArrayList&lt;Bomb&gt;();</span>
+<span class="fc" id="L204">        file.decode();</span>
+<span class="fc" id="L205">        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; playerinfo = file.getplayer();</span>
+<span class="fc" id="L206">        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; monsterinfo = file.getmonster();</span>
+<span class="fc" id="L207">        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bombinfo = file.getbomb();</span>
+<span class="fc" id="L208">        getkilled(monsterinfo);</span>
+<span class="fc" id="L209">        Calabash.setcnt(pnum);</span>
+<span class="fc" id="L210">        Monster.setcnt(mnum0, mnum);</span>
+<span class="fc" id="L211">        world = new World();</span>
+<span class="fc" id="L212">        recover_world(playerinfo);</span>
+<span class="fc" id="L213">        exec = Executors.newCachedThreadPool();</span>
+<span class="fc" id="L214">        recover_creature(playerinfo, monsterinfo);</span>
+<span class="fc" id="L215">        recover_bomb(bombinfo);</span>
+<span class="fc" id="L216">        exec.shutdown();</span>
+<span class="fc" id="L217">    }</span>
 
     private void getkilled(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; monsterinfo) {
-<span class="fc bfc" id="L105" title="All 2 branches covered.">        for (int i = 0; i &lt; monsterinfo.size(); ++i)</span>
-<span class="pc bpc" id="L106" title="1 of 2 branches missed.">            if (monsterinfo.get(i).get(2) == 0)</span>
-<span class="nc" id="L107">                --mnum0;</span>
-<span class="fc" id="L108">    }</span>
-
-    private void randomaddplayer() {
-<span class="fc" id="L111">        Monster.setcnt(mnum, mnum);</span>
-<span class="fc" id="L112">        playerlist.add(new Node(4, 4));</span>
-<span class="fc" id="L113">        ArrayList&lt;Integer&gt; temp = new ArrayList&lt;Integer&gt;();</span>
-<span class="fc" id="L114">        int len = dimension / 3;</span>
-<span class="fc bfc" id="L115" title="All 2 branches covered.">        for (int i = 0; i &lt; mnum; ++i) {</span>
-<span class="fc bfc" id="L116" title="All 2 branches covered.">            if (i % 8 == 0)</span>
-<span class="fc" id="L117">                temp.clear();</span>
-<span class="fc" id="L118">            int xrand = rand.nextInt(3), yrand = rand.nextInt(3);</span>
-<span class="fc bfc" id="L119" title="All 6 branches covered.">            while (temp.contains(xrand * 3 + yrand) || (xrand == 0 &amp;&amp; yrand == 0)) {</span>
-<span class="fc" id="L120">                xrand = rand.nextInt(3);</span>
-<span class="fc" id="L121">                yrand = rand.nextInt(3);</span>
-            }
-<span class="fc" id="L123">            temp.add(xrand * 3 + yrand);</span>
-<span class="fc" id="L124">            int x = xrand * len + rand.nextInt(len), y = yrand * len + rand.nextInt(len);</span>
-<span class="fc" id="L125">            playerlist.add(new Node(x, y));</span>
-        }
-<span class="fc" id="L127">    }</span>
-
-    private void init_world() {
-<span class="fc" id="L130">        MazeGenerator mazeGenerator = new MazeGenerator(dimension);</span>
-<span class="fc" id="L131">        mazeGenerator.addplayer(playerlist);</span>
-<span class="fc" id="L132">        mazeGenerator.generateMaze();</span>
-<span class="fc" id="L133">        maze = mazeGenerator.getMaze();</span>
-<span class="fc bfc" id="L134" title="All 2 branches covered.">        for (int i = 0; i &lt; player.length; ++i)</span>
-<span class="fc" id="L135">            player[i] = new Calabash(world, maze, bomb, i);</span>
-<span class="fc bfc" id="L136" title="All 2 branches covered.">        for (int i = 0; i &lt; dimension; ++i) {</span>
-<span class="fc bfc" id="L137" title="All 2 branches covered.">            for (int j = 0; j &lt; dimension; ++j) {</span>
-<span class="fc bfc" id="L138" title="All 2 branches covered.">                if (maze[i][j] == 0) {</span>
-<span class="fc" id="L139">                    Wall wall = new Wall(world);</span>
-<span class="fc" id="L140">                    world.put(wall, i, j);</span>
-<span class="fc" id="L141">                } else {</span>
-<span class="fc" id="L142">                    Floor floor = new Floor(world);</span>
-<span class="fc" id="L143">                    world.put(floor, i, j);</span>
-                }
-            }
-        }
-<span class="fc" id="L147">        printinfo();</span>
-<span class="fc" id="L148">    }</span>
-
-    private void recover_world(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; playerinfo) {
-<span class="fc" id="L151">        maze = file.getmaze();</span>
-<span class="fc bfc" id="L152" title="All 2 branches covered.">        for (int i = 0; i &lt; playerinfo.size(); ++i) {</span>
-<span class="fc" id="L153">            player[i] = new Calabash(world, maze, bomb, i, playerinfo.get(i).get(2), playerinfo.get(i).get(3),</span>
-<span class="fc" id="L154">                    playerinfo.get(i).get(4), playerinfo.get(i).get(5));</span>
-            // System.out.print(playerinfo.get(i).get(2));
-            // System.out.print(playerinfo.get(i).get(3));
-            // System.out.print(playerinfo.get(i).get(4));
-            // System.out.print(playerinfo.get(i).get(5));
-        }
-<span class="fc bfc" id="L160" title="All 2 branches covered.">        for (int i = 0; i &lt; dimension; ++i) {</span>
-<span class="fc bfc" id="L161" title="All 2 branches covered.">            for (int j = 0; j &lt; dimension; ++j) {</span>
-<span class="fc bfc" id="L162" title="All 2 branches covered.">                if (maze[i][j] == 0) {</span>
-<span class="fc" id="L163">                    Wall wall = new Wall(world);</span>
-<span class="fc" id="L164">                    world.put(wall, i, j);</span>
-<span class="fc" id="L165">                } else {</span>
-<span class="fc" id="L166">                    Floor floor = new Floor(world);</span>
-<span class="fc" id="L167">                    world.put(floor, i, j);</span>
-                }
-            }
-        }
-
-<span class="fc" id="L172">        printinfo();</span>
-
-<span class="fc" id="L174">    }</span>
-
-    private void printinfo() {
-<span class="fc" id="L177">        world.put(new Character(world, 'H'), 0, dimension);</span>
-<span class="fc" id="L178">        world.put(new Character(world, 'P'), 1, dimension);</span>
-<span class="fc" id="L179">        world.put(new Character(world, ':'), 2, dimension);</span>
-<span class="fc" id="L180">        player[0].printhp(3, dimension);</span>
-<span class="fc" id="L181">        world.put(new Character(world, '/'), 6, dimension);</span>
-<span class="fc" id="L182">        player[0].printmaxhp(7, dimension);</span>
-<span class="fc" id="L183">        world.put(new Character(world, ' '), 10, dimension);</span>
-<span class="fc" id="L184">        world.put(new Character(world, ' '), 11, dimension);</span>
-<span class="fc" id="L185">        world.put(new Character(world, 'B'), 12, dimension);</span>
-<span class="fc" id="L186">        world.put(new Character(world, 'O'), 13, dimension);</span>
-<span class="fc" id="L187">        world.put(new Character(world, 'M'), 14, dimension);</span>
-<span class="fc" id="L188">        world.put(new Character(world, 'B'), 15, dimension);</span>
-<span class="fc" id="L189">        world.put(new Character(world, ':'), 16, dimension);</span>
-<span class="fc" id="L190">        player[0].printmaxbomb(17, dimension);</span>
-<span class="fc" id="L191">        world.put(new Character(world, ' '), 19, dimension);</span>
-<span class="fc" id="L192">        world.put(new Character(world, ' '), 20, dimension);</span>
-<span class="fc" id="L193">        world.put(new Character(world, 'R'), 21, dimension);</span>
-<span class="fc" id="L194">        world.put(new Character(world, 'A'), 22, dimension);</span>
-<span class="fc" id="L195">        world.put(new Character(world, 'D'), 23, dimension);</span>
-<span class="fc" id="L196">        world.put(new Character(world, 'I'), 24, dimension);</span>
-<span class="fc" id="L197">        world.put(new Character(world, 'U'), 25, dimension);</span>
-<span class="fc" id="L198">        world.put(new Character(world, 'S'), 26, dimension);</span>
-<span class="fc" id="L199">        world.put(new Character(world, ':'), 27, dimension);</span>
-<span class="fc" id="L200">        player[0].printr(28, dimension);</span>
-<span class="pc bpc" id="L201" title="1 of 2 branches missed.">        for (int i = 30; i &lt; dimension; ++i)</span>
-<span class="nc" id="L202">            world.put(new Character(world, ' '), i, dimension);</span>
-<span class="fc" id="L203">        world.put(new Character(world, 'E'), 0, dimension + 1);</span>
-<span class="fc" id="L204">        world.put(new Character(world, 'N'), 1, dimension + 1);</span>
-<span class="fc" id="L205">        world.put(new Character(world, 'E'), 2, dimension + 1);</span>
-<span class="fc" id="L206">        world.put(new Character(world, 'M'), 3, dimension + 1);</span>
-<span class="fc" id="L207">        world.put(new Character(world, 'Y'), 4, dimension + 1);</span>
-<span class="fc" id="L208">        world.put(new Character(world, ' '), 5, dimension + 1);</span>
-<span class="fc" id="L209">        world.put(new Character(world, 'K'), 6, dimension + 1);</span>
-<span class="fc" id="L210">        world.put(new Character(world, 'I'), 7, dimension + 1);</span>
-<span class="fc" id="L211">        world.put(new Character(world, 'L'), 8, dimension + 1);</span>
-<span class="fc" id="L212">        world.put(new Character(world, 'L'), 9, dimension + 1);</span>
-<span class="fc" id="L213">        world.put(new Character(world, 'E'), 10, dimension + 1);</span>
-<span class="fc" id="L214">        world.put(new Character(world, 'D'), 11, dimension + 1);</span>
-<span class="fc" id="L215">        world.put(new Character(world, ':'), 12, dimension + 1);</span>
-<span class="fc" id="L216">        world.put(new Character(world, ' '), 13, dimension + 1);</span>
-<span class="fc" id="L217">        world.put(new Character(world, (char) (mnum - mnum0 + '0')), 14, dimension + 1);</span>
-<span class="fc" id="L218">        world.put(new Character(world, '/'), 15, dimension + 1);</span>
-<span class="fc" id="L219">        world.put(new Character(world, (char) (mnum + '0')), 16, dimension + 1);</span>
-<span class="fc" id="L220">        world.put(new Character(world, ' '), 17, dimension + 1);</span>
-<span class="fc bfc" id="L221" title="All 2 branches covered.">        for (int i = 18; i &lt; dimension; ++i)</span>
-<span class="fc" id="L222">            world.put(new Character(world, ' '), i, dimension + 1);</span>
+<span class="fc bfc" id="L220" title="All 2 branches covered.">        for (int i = 0; i &lt; monsterinfo.size(); ++i)</span>
+<span class="pc bpc" id="L221" title="1 of 2 branches missed.">            if (monsterinfo.get(i).get(2) == 0)</span>
+<span class="nc" id="L222">                --mnum0;</span>
 <span class="fc" id="L223">    }</span>
 
+    private void randomaddplayer() {
+<span class="fc" id="L226">        Calabash.setcnt(pnum);</span>
+<span class="fc" id="L227">        Monster.setcnt(mnum, mnum);</span>
+<span class="pc bpc" id="L228" title="1 of 2 branches missed.">        if (pnum &gt; 0)</span>
+<span class="fc" id="L229">            playerlist.add(new Node(4, 4));</span>
+<span class="pc bpc" id="L230" title="1 of 2 branches missed.">        if (pnum &gt; 1)</span>
+<span class="nc" id="L231">            playerlist.add(new Node(25, 25));</span>
+<span class="pc bpc" id="L232" title="1 of 2 branches missed.">        if (pnum &gt; 2)</span>
+<span class="nc" id="L233">            playerlist.add(new Node(4, 25));</span>
+<span class="pc bpc" id="L234" title="1 of 2 branches missed.">        if (pnum &gt; 3)</span>
+<span class="nc" id="L235">            playerlist.add(new Node(25, 4));</span>
+<span class="fc" id="L236">        ArrayList&lt;Integer&gt; temp = new ArrayList&lt;Integer&gt;();</span>
+<span class="fc" id="L237">        int len = dimension / 3;</span>
+<span class="fc bfc" id="L238" title="All 2 branches covered.">        for (int i = 0; i &lt; mnum; ++i) {</span>
+<span class="fc bfc" id="L239" title="All 2 branches covered.">            if (i % 8 == 0)</span>
+<span class="fc" id="L240">                temp.clear();</span>
+<span class="fc" id="L241">            int xrand = rand.nextInt(3), yrand = rand.nextInt(3);</span>
+<span class="fc bfc" id="L242" title="All 4 branches covered.">            while (temp.contains(xrand * 3 + yrand) || judge_player(xrand, yrand)) {</span>
+<span class="fc" id="L243">                xrand = rand.nextInt(3);</span>
+<span class="fc" id="L244">                yrand = rand.nextInt(3);</span>
+            }
+<span class="fc" id="L246">            temp.add(xrand * 3 + yrand);</span>
+<span class="fc" id="L247">            int x = xrand * len + rand.nextInt(len), y = yrand * len + rand.nextInt(len);</span>
+<span class="fc" id="L248">            playerlist.add(new Node(x, y));</span>
+        }
+<span class="fc" id="L250">    }</span>
+
+    private boolean judge_player(int xrand, int yrand) {
+<span class="pc bpc" id="L253" title="1 of 2 branches missed.">        if (pnum == 1)</span>
+<span class="fc bfc" id="L254" title="All 4 branches covered.">            return xrand == 0 &amp;&amp; yrand == 0;</span>
+<span class="nc bnc" id="L255" title="All 2 branches missed.">        if (pnum == 2)</span>
+<span class="nc bnc" id="L256" title="All 8 branches missed.">            return (xrand == 0 &amp;&amp; yrand == 0) || (xrand == 2 &amp;&amp; yrand == 2);</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">        if (pnum == 3)</span>
+<span class="nc bnc" id="L258" title="All 12 branches missed.">            return (xrand == 0 &amp;&amp; yrand == 0) || (xrand == 2 &amp;&amp; yrand == 2) || (xrand == 0 &amp;&amp; yrand == 2);</span>
+<span class="nc bnc" id="L259" title="All 2 branches missed.">        if (pnum == 4)</span>
+<span class="nc bnc" id="L260" title="All 12 branches missed.">            return (xrand == 0 &amp;&amp; yrand == 0) || (xrand == 2 &amp;&amp; yrand == 2) || (xrand == 0 &amp;&amp; yrand == 2)</span>
+<span class="nc bnc" id="L261" title="All 4 branches missed.">                    || (xrand == 2 &amp;&amp; yrand == 0);</span>
+<span class="nc" id="L262">        return true;</span>
+    }
+
+    private void init_world() {
+<span class="fc" id="L266">        MazeGenerator mazeGenerator = new MazeGenerator(dimension);</span>
+<span class="fc" id="L267">        mazeGenerator.addplayer(playerlist);</span>
+<span class="fc" id="L268">        mazeGenerator.generateMaze();</span>
+<span class="fc" id="L269">        maze = mazeGenerator.getMaze();</span>
+<span class="fc bfc" id="L270" title="All 2 branches covered.">        for (int i = 0; i &lt; player.length; ++i)</span>
+<span class="fc" id="L271">            player[i] = new Calabash(world, maze, bomb, i);</span>
+<span class="fc bfc" id="L272" title="All 2 branches covered.">        for (int i = 0; i &lt; dimension; ++i) {</span>
+<span class="fc bfc" id="L273" title="All 2 branches covered.">            for (int j = 0; j &lt; dimension; ++j) {</span>
+<span class="fc bfc" id="L274" title="All 2 branches covered.">                if (maze[i][j] == 0) {</span>
+<span class="fc" id="L275">                    Wall wall = new Wall(world);</span>
+<span class="fc" id="L276">                    world.put(wall, i, j);</span>
+<span class="fc" id="L277">                } else {</span>
+<span class="fc" id="L278">                    Floor floor = new Floor(world);</span>
+<span class="fc" id="L279">                    world.put(floor, i, j);</span>
+                }
+            }
+        }
+<span class="fc" id="L283">        printinfo();</span>
+<span class="fc" id="L284">    }</span>
+
+    private void recover_world(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; playerinfo) {
+<span class="fc" id="L287">        maze = file.getmaze();</span>
+<span class="fc bfc" id="L288" title="All 2 branches covered.">        for (int i = 0; i &lt; playerinfo.size(); ++i)</span>
+<span class="fc" id="L289">            player[i] = new Calabash(world, maze, bomb, i, playerinfo.get(i).get(2), playerinfo.get(i).get(3),</span>
+<span class="fc" id="L290">                    playerinfo.get(i).get(4), playerinfo.get(i).get(5));</span>
+<span class="fc bfc" id="L291" title="All 2 branches covered.">        for (int i = 0; i &lt; dimension; ++i) {</span>
+<span class="fc bfc" id="L292" title="All 2 branches covered.">            for (int j = 0; j &lt; dimension; ++j) {</span>
+<span class="fc bfc" id="L293" title="All 2 branches covered.">                if (maze[i][j] == 0) {</span>
+<span class="fc" id="L294">                    Wall wall = new Wall(world);</span>
+<span class="fc" id="L295">                    world.put(wall, i, j);</span>
+<span class="fc" id="L296">                } else {</span>
+<span class="fc" id="L297">                    Floor floor = new Floor(world);</span>
+<span class="fc" id="L298">                    world.put(floor, i, j);</span>
+                }
+            }
+        }
+
+<span class="fc" id="L303">        printinfo();</span>
+
+<span class="fc" id="L305">    }</span>
+
+    private void printinfo() {
+<span class="fc bfc" id="L308" title="All 2 branches covered.">        for (int i = 0; i &lt; World.WIDTH; ++i)</span>
+<span class="fc bfc" id="L309" title="All 2 branches covered.">            for (int j = 30; j &lt; World.HEIGHT; ++j)</span>
+<span class="fc" id="L310">                world.put(new Character(world, ' '), i, j);</span>
+<span class="fc" id="L311">        world.put(new Character(world, 'S'), 0, dimension);</span>
+<span class="fc" id="L312">        world.put(new Character(world, 'T'), 1, dimension);</span>
+<span class="fc" id="L313">        world.put(new Character(world, 'A'), 2, dimension);</span>
+<span class="fc" id="L314">        world.put(new Character(world, 'T'), 3, dimension);</span>
+<span class="fc" id="L315">        world.put(new Character(world, 'U'), 4, dimension);</span>
+<span class="fc" id="L316">        world.put(new Character(world, 'S'), 5, dimension);</span>
+<span class="fc" id="L317">        world.put(new Character(world, 'H'), 10, dimension);</span>
+<span class="fc" id="L318">        world.put(new Character(world, 'P'), 11, dimension);</span>
+<span class="fc" id="L319">        world.put(new Character(world, '/'), 12, dimension);</span>
+<span class="fc" id="L320">        world.put(new Character(world, 'M'), 13, dimension);</span>
+<span class="fc" id="L321">        world.put(new Character(world, 'A'), 14, dimension);</span>
+<span class="fc" id="L322">        world.put(new Character(world, 'X'), 15, dimension);</span>
+<span class="fc" id="L323">        world.put(new Character(world, 'B'), 18, dimension);</span>
+<span class="fc" id="L324">        world.put(new Character(world, 'O'), 19, dimension);</span>
+<span class="fc" id="L325">        world.put(new Character(world, 'M'), 20, dimension);</span>
+<span class="fc" id="L326">        world.put(new Character(world, 'B'), 21, dimension);</span>
+<span class="fc" id="L327">        world.put(new Character(world, 'R'), 24, dimension);</span>
+<span class="fc" id="L328">        world.put(new Character(world, 'A'), 25, dimension);</span>
+<span class="fc" id="L329">        world.put(new Character(world, 'D'), 26, dimension);</span>
+<span class="fc" id="L330">        world.put(new Character(world, 'I'), 27, dimension);</span>
+<span class="fc" id="L331">        world.put(new Character(world, 'U'), 28, dimension);</span>
+<span class="fc" id="L332">        world.put(new Character(world, 'S'), 29, dimension);</span>
+<span class="fc" id="L333">        world.put(new Character(world, 'M'), 0, dimension + 5);</span>
+<span class="fc" id="L334">        world.put(new Character(world, 'O'), 1, dimension + 5);</span>
+<span class="fc" id="L335">        world.put(new Character(world, 'N'), 2, dimension + 5);</span>
+<span class="fc" id="L336">        world.put(new Character(world, 'S'), 3, dimension + 5);</span>
+<span class="fc" id="L337">        world.put(new Character(world, 'T'), 4, dimension + 5);</span>
+<span class="fc" id="L338">        world.put(new Character(world, 'E'), 5, dimension + 5);</span>
+<span class="fc" id="L339">        world.put(new Character(world, 'R'), 6, dimension + 5);</span>
+<span class="fc" id="L340">        world.put(new Character(world, (char) 108), 7, dimension + 5);</span>
+<span class="fc" id="L341">        world.put(new Character(world, ':'), 8, dimension + 5);</span>
+        // world.put(new Character(world, (char) (mnum - mnum0 + '0')), 10, dimension +
+        // 5);
+<span class="fc" id="L344">        world.put(new Character(world, (char) (mnum + '0')), 10, dimension + 5);</span>
+<span class="fc" id="L345">        world.put(new Character(world, '/'), 11, dimension + 5);</span>
+<span class="fc" id="L346">        world.put(new Character(world, (char) (mnum + '0')), 12, dimension + 5);</span>
+<span class="fc bfc" id="L347" title="All 2 branches covered.">        for (int i = 0; i &lt; 4; ++i) {</span>
+<span class="fc" id="L348">            world.put(new Character(world, 'P'), 0, dimension + i + 1);</span>
+<span class="fc" id="L349">            world.put(new Character(world, 'L'), 1, dimension + i + 1);</span>
+<span class="fc" id="L350">            world.put(new Character(world, 'A'), 2, dimension + i + 1);</span>
+<span class="fc" id="L351">            world.put(new Character(world, 'Y'), 3, dimension + i + 1);</span>
+<span class="fc" id="L352">            world.put(new Character(world, 'E'), 4, dimension + i + 1);</span>
+<span class="fc" id="L353">            world.put(new Character(world, 'R'), 5, dimension + i + 1);</span>
+<span class="fc" id="L354">            world.put(new Character(world, (char) (i + 1 + '0')), 6, dimension + i + 1);</span>
+<span class="fc" id="L355">            world.put(new Character(world, (char) (102 + i)), 7, dimension + i + 1);</span>
+<span class="fc" id="L356">            world.put(new Character(world, ':'), 8, dimension + i + 1);</span>
+        }
+<span class="fc bfc" id="L358" title="All 2 branches covered.">        for (int i = 0; i &lt; player.length; ++i) {</span>
+<span class="fc" id="L359">            player[i].printhp(9, dimension + i + 1);</span>
+<span class="fc" id="L360">            world.put(new Character(world, '/'), 12, dimension + i + 1);</span>
+<span class="fc" id="L361">            player[i].printmaxhp(13, dimension + i + 1);</span>
+<span class="fc" id="L362">            player[i].printmaxbomb(19, dimension + i + 1);</span>
+<span class="fc" id="L363">            player[i].printr(26, dimension + i + 1);</span>
+        }
+<span class="fc bfc" id="L365" title="All 2 branches covered.">        for (int i = player.length; i &lt; 4; ++i) {</span>
+<span class="fc bfc" id="L366" title="All 2 branches covered.">            for (int j = 9; j &lt; 17; ++j)</span>
+<span class="fc" id="L367">                world.put(new Character(world, '-'), j, dimension + i + 1);</span>
+<span class="fc" id="L368">            world.put(new Character(world, 'N'), 17, dimension + i + 1);</span>
+<span class="fc" id="L369">            world.put(new Character(world, 'O'), 18, dimension + i + 1);</span>
+<span class="fc" id="L370">            world.put(new Character(world, 'N'), 19, dimension + i + 1);</span>
+<span class="fc" id="L371">            world.put(new Character(world, 'E'), 20, dimension + i + 1);</span>
+<span class="fc bfc" id="L372" title="All 2 branches covered.">            for (int j = 21; j &lt; 29; ++j)</span>
+<span class="fc" id="L373">                world.put(new Character(world, '-'), j, dimension + i + 1);</span>
+        }
+<span class="fc" id="L375">    }</span>
+
     private void init_creature() {
-<span class="fc bfc" id="L226" title="All 2 branches covered.">        for (int i = 0; i &lt; player.length; ++i) {</span>
-<span class="fc" id="L227">            exec.execute(player[i]);</span>
-<span class="fc" id="L228">            world.put(player[i], playerlist.get(i).x, playerlist.get(i).y);</span>
+<span class="fc bfc" id="L378" title="All 2 branches covered.">        for (int i = 0; i &lt; player.length; ++i) {</span>
+<span class="fc" id="L379">            exec.execute(player[i]);</span>
+<span class="fc" id="L380">            world.put(player[i], playerlist.get(i).x, playerlist.get(i).y);</span>
         }
-<span class="fc bfc" id="L230" title="All 2 branches covered.">        for (int i = 1; i &lt; playerlist.size(); ++i) {</span>
-<span class="fc" id="L231">            monster[i - 1] = new Monster(world, player[0], maze);</span>
-<span class="fc" id="L232">            exec.execute(monster[i - 1]);</span>
-<span class="fc" id="L233">            world.put(monster[i - 1], playerlist.get(i).x, playerlist.get(i).y);</span>
+<span class="fc bfc" id="L382" title="All 2 branches covered.">        for (int i = pnum; i &lt; playerlist.size(); ++i) {</span>
+<span class="fc" id="L383">            monster[i - pnum] = new Monster(world, player, maze);</span>
+<span class="fc" id="L384">            exec.execute(monster[i - pnum]);</span>
+<span class="fc" id="L385">            world.put(monster[i - pnum], playerlist.get(i).x, playerlist.get(i).y);</span>
         }
-<span class="fc" id="L235">        file.writelog(maze, player, monster, bomb);</span>
-<span class="fc" id="L236">    }</span>
+<span class="fc" id="L387">        file.writelog(maze, player, monster);</span>
+<span class="fc" id="L388">    }</span>
 
     private void recover_creature(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; playerinfo, ArrayList&lt;ArrayList&lt;Integer&gt;&gt; monsterinfo) {
-<span class="fc bfc" id="L239" title="All 2 branches covered.">        for (int i = 0; i &lt; player.length; ++i) {</span>
-<span class="fc" id="L240">            exec.execute(player[i]);</span>
-<span class="fc" id="L241">            world.put(player[i], playerinfo.get(i).get(0), playerinfo.get(i).get(1));</span>
+<span class="fc bfc" id="L391" title="All 2 branches covered.">        for (int i = 0; i &lt; player.length; ++i) {</span>
+<span class="fc" id="L392">            exec.execute(player[i]);</span>
+<span class="fc" id="L393">            world.put(player[i], playerinfo.get(i).get(0), playerinfo.get(i).get(1));</span>
         }
-<span class="fc bfc" id="L243" title="All 2 branches covered.">        for (int i = 0; i &lt; monsterinfo.size(); ++i) {</span>
-<span class="fc" id="L244">            monster[i] = new Monster(world, player[0], maze, monsterinfo.get(i).get(2));</span>
-<span class="fc" id="L245">            exec.execute(monster[i]);</span>
-<span class="fc" id="L246">            world.put(monster[i], monsterinfo.get(i).get(0), monsterinfo.get(i).get(1));</span>
+<span class="fc bfc" id="L395" title="All 2 branches covered.">        for (int i = 0; i &lt; monsterinfo.size(); ++i) {</span>
+<span class="fc" id="L396">            monster[i] = new Monster(world, player, maze, monsterinfo.get(i).get(2));</span>
+<span class="fc" id="L397">            exec.execute(monster[i]);</span>
+<span class="fc" id="L398">            world.put(monster[i], monsterinfo.get(i).get(0), monsterinfo.get(i).get(1));</span>
         }
-<span class="fc" id="L248">    }</span>
+        // world.put(new Character(world, (char) (Monster.cnt + '0')), 10, dimension +
+        // 5);
+<span class="fc" id="L402">    }</span>
 
     private void recover_bomb(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bombinfo) {
-<span class="pc bpc" id="L251" title="1 of 2 branches missed.">        for (int i = 0; i &lt; bombinfo.size(); ++i) {</span>
-<span class="nc" id="L252">            Bomb bomb = new Bomb(player[bombinfo.get(i).get(3)], world, bombinfo.get(i).get(2), bombinfo.get(i).get(3),</span>
-<span class="nc" id="L253">                    bombinfo.get(i).get(4), bombinfo.get(i).get(5));</span>
-<span class="nc" id="L254">            this.bomb.add(bomb);</span>
-<span class="nc" id="L255">            world.put(bomb, bombinfo.get(i).get(0), bombinfo.get(i).get(1));</span>
-<span class="nc" id="L256">            exec.execute(bomb);</span>
+<span class="pc bpc" id="L405" title="1 of 2 branches missed.">        for (int i = 0; i &lt; bombinfo.size(); ++i) {</span>
+<span class="nc" id="L406">            Bomb bomb = new Bomb(player[bombinfo.get(i).get(3)], world, bombinfo.get(i).get(2), bombinfo.get(i).get(3),</span>
+<span class="nc" id="L407">                    bombinfo.get(i).get(4), bombinfo.get(i).get(5));</span>
+<span class="nc" id="L408">            this.bomb.add(bomb);</span>
+<span class="nc" id="L409">            world.put(bomb, bombinfo.get(i).get(0), bombinfo.get(i).get(1));</span>
+<span class="nc" id="L410">            exec.execute(bomb);</span>
         }
-<span class="fc" id="L258">    }</span>
+<span class="fc" id="L412">    }</span>
 
     public static int[][] getmaze() {
-<span class="fc" id="L261">        return maze;</span>
+<span class="fc" id="L415">        return maze;</span>
     }
 
     @Override
     public void displayOutput(AsciiPanel terminal) {
 
-<span class="fc bfc" id="L267" title="All 2 branches covered.">        for (int x = 0; x &lt; World.WIDTH; x++) {</span>
-<span class="fc bfc" id="L268" title="All 2 branches covered.">            for (int y = 0; y &lt; World.HEIGHT; y++) {</span>
+<span class="fc bfc" id="L421" title="All 2 branches covered.">        for (int x = 0; x &lt; World.WIDTH; x++) {</span>
+<span class="fc bfc" id="L422" title="All 2 branches covered.">            for (int y = 0; y &lt; World.HEIGHT; y++) {</span>
 
-<span class="fc" id="L270">                terminal.write(world.get(x, y).getGlyph(), x, y, world.get(x, y).getColor());</span>
+<span class="fc" id="L424">                terminal.write(world.get(x, y).getGlyph(), x, y, world.get(x, y).getColor());</span>
 
             }
         }
-<span class="fc" id="L274">    }</span>
+<span class="fc" id="L428">    }</span>
+
+    public Screen respondToClient(int playerid, int keycode) {
+<span class="nc bnc" id="L431" title="All 2 branches missed.">        if (start == -1)</span>
+<span class="nc" id="L432">            return this;</span>
+<span class="nc bnc" id="L433" title="All 2 branches missed.">        if (start &gt; 0) {</span>
+<span class="nc bnc" id="L434" title="All 3 branches missed.">            switch (keycode) {</span>
+                case KeyEvent.VK_UP:
+                case KeyEvent.VK_DOWN:
+<span class="nc" id="L437">                    start = 3 - start;</span>
+<span class="nc" id="L438">                    break;</span>
+                case KeyEvent.VK_SPACE:
+<span class="nc bnc" id="L440" title="All 2 branches missed.">                    if (start == 1)</span>
+<span class="nc" id="L441">                        newgame();</span>
+<span class="nc bnc" id="L442" title="All 2 branches missed.">                    else if (start == 2) {</span>
+<span class="nc bnc" id="L443" title="All 2 branches missed.">                        if (pnum == lasttime)</span>
+<span class="nc" id="L444">                            oldgame();</span>
+                        else
+                            break;
+                    }
+<span class="nc" id="L448">                    start = 0;</span>
+<span class="nc" id="L449">                    return this;</span>
+            }
+<span class="nc bnc" id="L451" title="All 2 branches missed.">            if (start == 1) {</span>
+<span class="nc" id="L452">                world.put(new Character(world, (char) 16), 10, 14);</span>
+<span class="nc" id="L453">                world.put(new Character(world, (char) 17), 19, 14);</span>
+<span class="nc" id="L454">                world.put(new Character(world, ' '), 4, 18);</span>
+<span class="nc" id="L455">                world.put(new Character(world, ' '), 25, 18);</span>
+<span class="nc bnc" id="L456" title="All 2 branches missed.">            } else if (start == 2) {</span>
+<span class="nc" id="L457">                world.put(new Character(world, ' '), 10, 14);</span>
+<span class="nc" id="L458">                world.put(new Character(world, ' '), 19, 14);</span>
+<span class="nc" id="L459">                world.put(new Character(world, (char) 16), 4, 18);</span>
+<span class="nc" id="L460">                world.put(new Character(world, (char) 17), 25, 18);</span>
+            }
+<span class="nc" id="L462">            return this;</span>
+        }
+<span class="nc bnc" id="L464" title="All 6 branches missed.">        switch (keycode) {</span>
+            case KeyEvent.VK_LEFT:
+<span class="nc" id="L466">                player[playerid].move(world, 27);</span>
+<span class="nc" id="L467">                break;</span>
+            case KeyEvent.VK_RIGHT:
+<span class="nc" id="L469">                player[playerid].move(world, 26);</span>
+<span class="nc" id="L470">                break;</span>
+            case KeyEvent.VK_UP:
+<span class="nc" id="L472">                player[playerid].move(world, 24);</span>
+<span class="nc" id="L473">                break;</span>
+            case KeyEvent.VK_DOWN:
+<span class="nc" id="L475">                player[playerid].move(world, 25);</span>
+<span class="nc" id="L476">                break;</span>
+            case KeyEvent.VK_SPACE:
+<span class="nc" id="L478">                player[playerid].setbomb(world);</span>
+                break;
+        }
+<span class="nc" id="L481">        return this;</span>
+    }
 
     @Override
     public Screen respondToUserInput(KeyEvent key) {
-<span class="nc bnc" id="L278" title="All 2 branches missed.">        if (start &gt; 0) {</span>
-<span class="nc bnc" id="L279" title="All 4 branches missed.">            switch (key.getKeyCode()) {</span>
-                case KeyEvent.VK_UP:
-<span class="nc" id="L281">                    world.put(new Character(world, (char) 16), 10, 13);</span>
-<span class="nc" id="L282">                    world.put(new Character(world, ' '), 10, 17);</span>
-<span class="nc" id="L283">                    start = 1;</span>
-<span class="nc" id="L284">                    break;</span>
-                case KeyEvent.VK_DOWN:
-<span class="nc" id="L286">                    world.put(new Character(world, (char) 16), 10, 17);</span>
-<span class="nc" id="L287">                    world.put(new Character(world, ' '), 10, 13);</span>
-<span class="nc" id="L288">                    start = 2;</span>
-<span class="nc" id="L289">                    break;</span>
-                case KeyEvent.VK_SPACE:
-<span class="nc bnc" id="L291" title="All 2 branches missed.">                    if (start == 1)</span>
-<span class="nc" id="L292">                        newgame();</span>
-                    else
-<span class="nc" id="L294">                        oldgame();</span>
-<span class="nc" id="L295">                    start = 0;</span>
-                    break;
-            }
-<span class="nc" id="L298">            return this;</span>
-        }
-<span class="nc bnc" id="L300" title="All 2 branches missed.">        if (!Monster.hasmonster())</span>
-<span class="nc" id="L301">            return this;</span>
-<span class="nc bnc" id="L302" title="All 6 branches missed.">        switch (key.getKeyCode()) {</span>
-            case KeyEvent.VK_LEFT:
-<span class="nc" id="L304">                player[0].move(world, 27);</span>
-<span class="nc" id="L305">                break;</span>
-            case KeyEvent.VK_RIGHT:
-<span class="nc" id="L307">                player[0].move(world, 26);</span>
-<span class="nc" id="L308">                break;</span>
-            case KeyEvent.VK_UP:
-<span class="nc" id="L310">                player[0].move(world, 24);</span>
-<span class="nc" id="L311">                break;</span>
-            case KeyEvent.VK_DOWN:
-<span class="nc" id="L313">                player[0].move(world, 25);</span>
-<span class="nc" id="L314">                break;</span>
-            case KeyEvent.VK_SPACE:
-<span class="nc" id="L316">                player[0].setbomb(world);</span>
-                break;
-        }
-<span class="nc" id="L319">        file.writelog(maze, player, monster, player[0].bomblist);</span>
-<span class="nc" id="L320">        return this;</span>
+<span class="nc" id="L486">        return this;</span>
     }
 
+    public void check() {
+<span class="pc bpc" id="L490" title="3 of 4 branches missed.">        if (start &gt; 0 || start == -1)</span>
+<span class="fc" id="L491">            return;</span>
+<span class="nc bnc" id="L492" title="All 4 branches missed.">        if (Calabash.getplayer() == 0 &amp;&amp; Monster.hasmonster()) {</span>
+<span class="nc" id="L493">            world.put(new Character(world, 'M'), 16, dimension + 5);</span>
+<span class="nc" id="L494">            world.put(new Character(world, 'O'), 17, dimension + 5);</span>
+<span class="nc" id="L495">            world.put(new Character(world, 'N'), 18, dimension + 5);</span>
+<span class="nc" id="L496">            world.put(new Character(world, 'S'), 19, dimension + 5);</span>
+<span class="nc" id="L497">            world.put(new Character(world, 'T'), 20, dimension + 5);</span>
+<span class="nc" id="L498">            world.put(new Character(world, 'E'), 21, dimension + 5);</span>
+<span class="nc" id="L499">            world.put(new Character(world, 'R'), 22, dimension + 5);</span>
+<span class="nc" id="L500">            world.put(new Character(world, 'S'), 23, dimension + 5);</span>
+<span class="nc" id="L501">            world.put(new Character(world, (char) 108), 24, dimension + 5);</span>
+<span class="nc" id="L502">            world.put(new Character(world, 'W'), 26, dimension + 5);</span>
+<span class="nc" id="L503">            world.put(new Character(world, 'I'), 27, dimension + 5);</span>
+<span class="nc" id="L504">            world.put(new Character(world, 'N'), 28, dimension + 5);</span>
+<span class="nc" id="L505">            world.put(new Character(world, '!'), 29, dimension + 5);</span>
+<span class="nc" id="L506">            start = -1;</span>
+<span class="nc bnc" id="L507" title="All 4 branches missed.">        } else if (Calabash.getplayer() == 1 &amp;&amp; !Monster.hasmonster()) {</span>
+<span class="nc" id="L508">            int num = -1;</span>
+<span class="nc bnc" id="L509" title="All 2 branches missed.">            for (int i = 0; i &lt; player.length; ++i) {</span>
+<span class="nc bnc" id="L510" title="All 2 branches missed.">                if (player[i].is_alive()) {</span>
+<span class="nc" id="L511">                    num = i;</span>
+<span class="nc" id="L512">                    break;</span>
+                }
+            }
+<span class="nc bnc" id="L515" title="All 2 branches missed.">            if (num == -1)</span>
+<span class="nc" id="L516">                return;</span>
+<span class="nc" id="L517">            world.put(new Character(world, 'P'), 17, dimension + 5);</span>
+<span class="nc" id="L518">            world.put(new Character(world, 'L'), 18, dimension + 5);</span>
+<span class="nc" id="L519">            world.put(new Character(world, 'A'), 19, dimension + 5);</span>
+<span class="nc" id="L520">            world.put(new Character(world, 'Y'), 20, dimension + 5);</span>
+<span class="nc" id="L521">            world.put(new Character(world, 'E'), 21, dimension + 5);</span>
+<span class="nc" id="L522">            world.put(new Character(world, 'R'), 22, dimension + 5);</span>
+<span class="nc" id="L523">            world.put(new Character(world, (char) (num + 1 + '0')), 23, dimension + 5);</span>
+<span class="nc" id="L524">            world.put(new Character(world, (char) (102 + num)), 24, dimension + 5);</span>
+<span class="nc" id="L525">            world.put(new Character(world, 'W'), 26, dimension + 5);</span>
+<span class="nc" id="L526">            world.put(new Character(world, 'I'), 27, dimension + 5);</span>
+<span class="nc" id="L527">            world.put(new Character(world, 'N'), 28, dimension + 5);</span>
+<span class="nc" id="L528">            world.put(new Character(world, '!'), 29, dimension + 5);</span>
+<span class="nc" id="L529">            start = -1;</span>
+<span class="nc bnc" id="L530" title="All 4 branches missed.">        } else if (Calabash.getplayer() == 0 &amp;&amp; !Monster.hasmonster()) {</span>
+<span class="nc" id="L531">            int num = Calabash.getdeath();</span>
+<span class="nc" id="L532">            world.put(new Character(world, 'P'), 17, dimension + 5);</span>
+<span class="nc" id="L533">            world.put(new Character(world, 'L'), 18, dimension + 5);</span>
+<span class="nc" id="L534">            world.put(new Character(world, 'A'), 19, dimension + 5);</span>
+<span class="nc" id="L535">            world.put(new Character(world, 'Y'), 20, dimension + 5);</span>
+<span class="nc" id="L536">            world.put(new Character(world, 'E'), 21, dimension + 5);</span>
+<span class="nc" id="L537">            world.put(new Character(world, 'R'), 22, dimension + 5);</span>
+<span class="nc" id="L538">            world.put(new Character(world, (char) (num + 1 + '0')), 23, dimension + 5);</span>
+<span class="nc" id="L539">            world.put(new Character(world, (char) (102 + num)), 24, dimension + 5);</span>
+<span class="nc" id="L540">            world.put(new Character(world, 'W'), 26, dimension + 5);</span>
+<span class="nc" id="L541">            world.put(new Character(world, 'I'), 27, dimension + 5);</span>
+<span class="nc" id="L542">            world.put(new Character(world, 'N'), 28, dimension + 5);</span>
+<span class="nc" id="L543">            world.put(new Character(world, '!'), 29, dimension + 5);</span>
+<span class="nc" id="L544">            start = -1;</span>
+        }
+<span class="nc" id="L546">    }</span>
+
+    public void writelog() {
+<span class="nc" id="L549">        file.writelog(maze, player, monster);</span>
+<span class="nc" id="L550">    }</span>
+
     public World getworld() {
-<span class="fc" id="L324">        return world;</span>
+<span class="fc" id="L553">        return world;</span>
     }
 
     public Calabash[] getplayer() { // for test
-<span class="fc" id="L328">        return player;</span>
+<span class="fc" id="L557">        return player;</span>
     }
 
     public Monster[] getmonster() {
-<span class="fc" id="L332">        return monster;</span>
+<span class="fc" id="L561">        return monster;</span>
+    }
+
+    public void addplayer() {
+<span class="fc" id="L565">        ++pnum;</span>
+<span class="fc" id="L566">        --mnum;</span>
+<span class="fc" id="L567">        --mnum0;</span>
+<span class="fc" id="L568">        world.put(new Character(world, (char) (pnum + '0')), 22, 25);</span>
+<span class="fc" id="L569">    }</span>
+
+    public int getplayerid() {
+<span class="fc" id="L572">        int res = -1;</span>
+<span class="pc bpc" id="L573" title="1 of 2 branches missed.">        if (start &gt; 0) {</span>
+<span class="fc" id="L574">            res = playerid;</span>
+<span class="fc" id="L575">            ++playerid;</span>
+<span class="fc" id="L576">            addplayer();</span>
+        }
+<span class="fc" id="L578">        return res;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

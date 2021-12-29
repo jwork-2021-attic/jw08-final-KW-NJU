@@ -9,28 +9,28 @@ public class Monster extends Creature implements Runnable {
 
     Random rand;
 
-    Calabash player;
+    Calabash[] player;
     Bfs bfs;
     static int maxcnt;
     static int cnt;
 
-    public Monster(World world, Calabash player, int[][] maze) {
-<span class="fc" id="L18">        super(Color.RED, (char) 1, world);</span>
+    public Monster(World world, Calabash[] player, int[][] maze) {
+<span class="fc" id="L18">        super(Color.RED, (char) 8, world);</span>
 <span class="fc" id="L19">        rand = new Random();</span>
 <span class="fc" id="L20">        this.maze = maze;</span>
 <span class="fc" id="L21">        this.player = player;</span>
 <span class="fc" id="L22">        this.hp = 20;</span>
-<span class="fc" id="L23">        bfs = new Bfs(maze);</span>
+<span class="fc" id="L23">        bfs = new Bfs(player, maze);</span>
 <span class="fc" id="L24">        attack = 15;</span>
 <span class="fc" id="L25">    }</span>
 
-    public Monster(World world, Calabash player, int[][] maze, int hp) {
-<span class="fc" id="L28">        super(Color.RED, (char) 1, world);</span>
+    public Monster(World world, Calabash[] player, int[][] maze, int hp) {
+<span class="fc" id="L28">        super(Color.RED, (char) 8, world);</span>
 <span class="fc" id="L29">        rand = new Random();</span>
 <span class="fc" id="L30">        this.maze = maze;</span>
 <span class="fc" id="L31">        this.player = player;</span>
 <span class="fc" id="L32">        this.hp = hp;</span>
-<span class="fc" id="L33">        bfs = new Bfs(maze);</span>
+<span class="fc" id="L33">        bfs = new Bfs(player, maze);</span>
 <span class="fc" id="L34">        attack = 15;</span>
 <span class="fc" id="L35">    }</span>
 
@@ -39,117 +39,126 @@ public class Monster extends Creature implements Runnable {
 <span class="nc" id="L39">            int x = this.getX(), y = this.getY();</span>
 <span class="nc bnc" id="L40" title="All 2 branches missed.">            if (maze[x][y] == 1)</span>
 <span class="nc" id="L41">                world.put(new Floor(world), this.getX(), this.getY());</span>
-<span class="nc bnc" id="L42" title="All 2 branches missed.">            else if (maze[x][y] == 2)</span>
-<span class="nc" id="L43">                world.put(player, this.getX(), this.getY());</span>
-<span class="nc bnc" id="L44" title="All 2 branches missed.">            else if (maze[x][y] == 5)</span>
-<span class="nc" id="L45">                world.put(new Thing(Color.ORANGE, (char) 3, world), x, y);</span>
-<span class="nc bnc" id="L46" title="All 2 branches missed.">            else if (maze[x][y] == 6)</span>
-<span class="nc" id="L47">                world.put(new Thing(Color.ORANGE, (char) 7, world), x, y);</span>
-<span class="nc bnc" id="L48" title="All 2 branches missed.">            else if (maze[x][y] == 7)</span>
-<span class="nc" id="L49">                world.put(new Thing(Color.ORANGE, (char) 43, world), x, y);</span>
-<span class="nc" id="L50">            return;</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">            else if (maze[x][y] == 2) {</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">                for (Calabash c : player)</span>
+<span class="nc" id="L44">                    world.put(c, this.getX(), this.getY());</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">            } else if (maze[x][y] == 5)</span>
+<span class="nc" id="L46">                world.put(new Thing(Color.ORANGE, (char) 9, world), x, y);</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">            else if (maze[x][y] == 6)</span>
+<span class="nc" id="L48">                world.put(new Thing(Color.ORANGE, (char) 10, world), x, y);</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">            else if (maze[x][y] == 7)</span>
+<span class="nc" id="L50">                world.put(new Thing(Color.ORANGE, (char) 11, world), x, y);</span>
+<span class="nc" id="L51">            printcnt(9, maze.length + 5);</span>
+<span class="nc" id="L52">            return;</span>
         }
-<span class="fc" id="L52">        ArrayList&lt;Integer&gt; plan = new ArrayList&lt;Integer&gt;();</span>
-<span class="pc bpc" id="L53" title="1 of 4 branches missed.">        while (is_alive() &amp;&amp; player.is_alive()) {</span>
-<span class="fc" id="L54">            int x = player.getX(), y = player.getY();</span>
-<span class="fc bfc" id="L55" title="All 4 branches covered.">            if (bfs.has_changed(x, y) || plan.isEmpty()) {</span>
-                try {
-<span class="fc" id="L57">                    world.lock.lock();</span>
-<span class="fc" id="L58">                    bfs.makePlan(maze, x, y, this.getX(), this.getY());</span>
-<span class="fc" id="L59">                } finally {</span>
-<span class="fc" id="L60">                    world.lock.unlock();</span>
-<span class="fc" id="L61">                    plan = bfs.getPlan();</span>
-                }
-
-            }
-<span class="pc bpc" id="L65" title="1 of 2 branches missed.">            if (!plan.isEmpty()) {</span>
-<span class="fc" id="L66">                move(world, plan.get(0));</span>
-<span class="fc" id="L67">                plan.remove(0);</span>
+<span class="fc" id="L54">        ArrayList&lt;Integer&gt; plan = new ArrayList&lt;Integer&gt;();</span>
+<span class="pc bpc" id="L55" title="2 of 4 branches missed.">        while (is_alive() &amp;&amp; Calabash.hasplayer()) {</span>
+<span class="fc" id="L56">            world.lock.lock();</span>
+            // idx = bfs.getnear(player, maze, this.getX(), this.getY());
+            // int x = player[idx].getX(), y = player[idx].getY();
+            // if (bfs.has_changed(x, y) || plan.isEmpty())
+<span class="fc" id="L60">            bfs.makePlan(maze, this.getX(), this.getY());</span>
+<span class="fc" id="L61">            world.lock.unlock();</span>
+<span class="fc" id="L62">            plan = bfs.getPlan();</span>
+<span class="pc bpc" id="L63" title="1 of 2 branches missed.">            if (!plan.isEmpty()) {</span>
+<span class="fc" id="L64">                move(world, plan.get(0));</span>
+<span class="fc" id="L65">                plan.remove(0);</span>
             }
             try {
-<span class="fc" id="L70">                TimeUnit.MILLISECONDS.sleep(300);</span>
-<span class="pc" id="L71">            } catch (InterruptedException e) {</span>
+<span class="fc" id="L68">                TimeUnit.MILLISECONDS.sleep(300);</span>
+<span class="pc" id="L69">            } catch (InterruptedException e) {</span>
                 // TODO Auto-generated catch block
-<span class="nc" id="L73">                e.printStackTrace();</span>
+<span class="nc" id="L71">                e.printStackTrace();</span>
             }
-<span class="pc bpc" id="L75" title="1 of 2 branches missed.">            if (bfs.is_close(player.getX(), player.getY(), this.getX(), this.getY()))</span>
-<span class="nc" id="L76">                attack(player);</span>
+<span class="fc" id="L73">            int idx = bfs.get_target(this.getX(), this.getY());</span>
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">            if (idx != -1) {</span>
+<span class="nc" id="L75">                attack(player[idx]);</span>
+            }
 <span class="fc" id="L77">            gethurt();</span>
         }
-<span class="pc bpc" id="L79" title="1 of 2 branches missed.">        if (player.is_alive()) {</span>
-            try {
-<span class="nc" id="L81">                world.lock.lock();</span>
+        try {
+<span class="nc" id="L80">            world.lock.lock();</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">            if (!is_alive()) {</span>
 <span class="nc" id="L82">                hp = 0;</span>
 <span class="nc" id="L83">                --cnt;</span>
-<span class="nc" id="L84">                printcnt(13, maze.length + 1);</span>
-<span class="nc" id="L85">                createitem(this.getX(), this.getY());</span>
-<span class="nc" id="L86">            } finally {</span>
-<span class="nc" id="L87">                world.lock.unlock();</span>
+<span class="nc" id="L84">                printcnt(9, maze.length + 5);</span>
             }
+<span class="nc bnc" id="L86" title="All 2 branches missed.">            if (Calabash.hasplayer())</span>
+<span class="nc" id="L87">                createitem(this.getX(), this.getY());</span>
+<span class="nc" id="L88">        } finally {</span>
+<span class="nc" id="L89">            world.lock.unlock();</span>
         }
-<span class="fc" id="L90">    }</span>
+<span class="nc" id="L91">    }</span>
 
     public void attack(Calabash player) {
-<span class="fc" id="L93">        player.getattack(attack);</span>
-<span class="fc" id="L94">        getattack(player.attack);</span>
-<span class="pc bpc" id="L95" title="1 of 2 branches missed.">        if (is_alive()) {</span>
+<span class="fc" id="L94">        player.getattack(attack);</span>
+<span class="fc" id="L95">        getattack(player.attack);</span>
+<span class="pc bpc" id="L96" title="1 of 2 branches missed.">        if (is_alive()) {</span>
             try {
-<span class="fc" id="L97">                TimeUnit.MILLISECONDS.sleep(800);</span>
-<span class="pc" id="L98">            } catch (InterruptedException e) {</span>
+<span class="fc" id="L98">                TimeUnit.MILLISECONDS.sleep(800);</span>
+<span class="pc" id="L99">            } catch (InterruptedException e) {</span>
                 // TODO Auto-generated catch block
-<span class="nc" id="L100">                e.printStackTrace();</span>
+<span class="nc" id="L101">                e.printStackTrace();</span>
             }
         }
-<span class="fc" id="L103">    }</span>
+<span class="fc" id="L104">    }</span>
 
     @Override
     public void gethurt() {
-<span class="fc" id="L107">        int x = this.getX(), y = this.getY();</span>
-<span class="pc bpc" id="L108" title="1 of 2 branches missed.">        if (maze[x][y] &gt;= 10) {</span>
-<span class="nc" id="L109">            getattack(maze[x][y]);</span>
+<span class="fc" id="L108">        int x = this.getX(), y = this.getY();</span>
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">        if (maze[x][y] &gt;= 10) {</span>
+<span class="nc" id="L110">            getattack(maze[x][y]);</span>
             try {
-<span class="nc" id="L111">                TimeUnit.MILLISECONDS.sleep(300);</span>
-<span class="nc" id="L112">            } catch (InterruptedException e) {</span>
+<span class="nc" id="L112">                TimeUnit.MILLISECONDS.sleep(300);</span>
+<span class="nc" id="L113">            } catch (InterruptedException e) {</span>
                 // TODO Auto-generated catch block
-<span class="nc" id="L114">                e.printStackTrace();</span>
+<span class="nc" id="L115">                e.printStackTrace();</span>
             }
             // world.put(this, this.getX(), this.getY());
         }
-<span class="fc" id="L118">    }</span>
+<span class="fc" id="L119">    }</span>
 
     public void createitem(int i, int j) {
-<span class="fc" id="L121">        int seed = rand.nextInt(10);</span>
-<span class="pc bpc" id="L122" title="1 of 4 branches missed.">        if (cnt == 0 || seed &lt; 3) {</span>
-<span class="fc" id="L123">            world.put(new Floor(world), this.getX(), this.getY());</span>
-<span class="fc" id="L124">            maze[this.getX()][this.getY()] = 1;</span>
-<span class="fc bfc" id="L125" title="All 2 branches covered.">        } else if (seed &lt; 6) {</span>
-<span class="fc" id="L126">            world.put(new Thing(Color.ORANGE, (char) 3, world), i, j);</span>
-<span class="fc" id="L127">            maze[i][j] = 5;</span>
-<span class="fc bfc" id="L128" title="All 2 branches covered.">        } else if (seed &lt; 8) {</span>
-<span class="fc" id="L129">            world.put(new Thing(Color.ORANGE, (char) 7, world), i, j);</span>
-<span class="fc" id="L130">            maze[i][j] = 6;</span>
-<span class="pc bpc" id="L131" title="1 of 2 branches missed.">        } else if (seed &lt; 10) {</span>
-<span class="fc" id="L132">            world.put(new Thing(Color.ORANGE, (char) 43, world), i, j);</span>
-<span class="fc" id="L133">            maze[i][j] = 7;</span>
+<span class="fc" id="L122">        int seed = rand.nextInt(10);</span>
+<span class="pc bpc" id="L123" title="2 of 4 branches missed.">        if (cnt == 0 || seed &lt; 3) {</span>
+<span class="nc" id="L124">            world.put(new Floor(world), this.getX(), this.getY());</span>
+<span class="nc" id="L125">            maze[this.getX()][this.getY()] = 1;</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">        } else if (seed &lt; 6) {</span>
+<span class="fc" id="L127">            world.put(new Thing(Color.ORANGE, (char) 9, world), i, j);</span>
+<span class="fc" id="L128">            maze[i][j] = 5;</span>
+<span class="pc bnc" id="L129" title="All 2 branches missed.">        } else if (seed &lt; 8) {</span>
+<span class="nc" id="L130">            world.put(new Thing(Color.ORANGE, (char) 10, world), i, j);</span>
+<span class="nc" id="L131">            maze[i][j] = 6;</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">        } else if (seed &lt; 10) {</span>
+<span class="nc" id="L133">            world.put(new Thing(Color.ORANGE, (char) 11, world), i, j);</span>
+<span class="nc" id="L134">            maze[i][j] = 7;</span>
         }
-<span class="fc" id="L135">    }</span>
+<span class="fc" id="L136">    }</span>
 
     public void printcnt(int x, int y) {
-<span class="fc" id="L138">        int num = maxcnt - cnt;</span>
-<span class="pc bpc" id="L139" title="1 of 2 branches missed.">        if (num &gt; 9)</span>
-<span class="nc" id="L140">            world.put(new Character(world, (char) (num / 10 + '0')), x, y);</span>
+        // int num = maxcnt - cnt;
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">        if (cnt &gt; 9)</span>
+<span class="nc" id="L141">            world.put(new Character(world, (char) (cnt / 10 + '0')), x, y);</span>
         else
-<span class="fc" id="L142">            world.put(new Character(world, ' '), x, y);</span>
-<span class="fc" id="L143">        world.put(new Character(world, (char) (num % 10 + '0')), x + 1, y);</span>
-<span class="fc" id="L144">    }</span>
+<span class="fc" id="L143">            world.put(new Character(world, ' '), x, y);</span>
+<span class="fc" id="L144">        world.put(new Character(world, (char) (cnt % 10 + '0')), x + 1, y);</span>
+<span class="fc" id="L145">    }</span>
 
     public static void setcnt(int cnt, int maxcnt) {
-<span class="fc" id="L147">        Monster.cnt = cnt;</span>
-<span class="fc" id="L148">        Monster.maxcnt = maxcnt;</span>
-<span class="fc" id="L149">    }</span>
+<span class="fc" id="L148">        Monster.cnt = cnt;</span>
+<span class="fc" id="L149">        Monster.maxcnt = maxcnt;</span>
+<span class="fc" id="L150">    }</span>
 
     public static boolean hasmonster() {
-<span class="pc bpc" id="L152" title="1 of 2 branches missed.">        return Monster.cnt &gt; 0;</span>
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">        return Monster.cnt &gt; 0;</span>
     }
+
+    // public boolean player_alive() {
+    // for (Calabash c : player) {
+    // if (c.is_alive())
+    // return true;
+    // }
+    // return false;
+    // }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

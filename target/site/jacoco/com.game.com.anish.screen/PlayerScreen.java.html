@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PlayerScreen.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">myprj</a> &gt; <a href="index.source.html" class="el_package">com.game.com.anish.screen</a> &gt; <span class="el_source">PlayerScreen.java</span></div><h1>PlayerScreen.java</h1><pre class="source lang-java linenums">package com.game.com.anish.screen;
+
+import java.awt.event.KeyEvent;
+import java.awt.Color;
+
+import com.game.com.anish.creatures.World;
+import com.game.asciiPanel.AsciiPanel;
+
+public class PlayerScreen implements Screen {
+
+    char[][] worldGlyph;
+    Color[][] worldColor;
+
+<span class="fc" id="L14">    public PlayerScreen() {</span>
+<span class="fc" id="L15">        worldGlyph = new char[World.WIDTH][World.HEIGHT];</span>
+<span class="fc" id="L16">        worldColor = new Color[World.WIDTH][World.HEIGHT];</span>
+<span class="fc" id="L17">    }</span>
+
+    public void setGlyph(int x, int y, char c) {
+<span class="fc" id="L20">        worldGlyph[x][y] = c;</span>
+<span class="fc" id="L21">    }</span>
+
+    public void setColor(int x, int y, Color c) {
+<span class="fc" id="L24">        worldColor[x][y] = c;</span>
+<span class="fc" id="L25">    }</span>
+
+    @Override
+    public void displayOutput(AsciiPanel terminal) {
+
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        for (int i = 0; i &lt; World.WIDTH; ++i) {</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">            for (int j = 0; j &lt; World.HEIGHT; ++j) {</span>
+
+<span class="fc" id="L33">                terminal.write(worldGlyph[i][j], i, j, worldColor[i][j]);</span>
+
+            }
+        }
+<span class="fc" id="L37">    }</span>
+
+    @Override
+    public Screen respondToUserInput(KeyEvent key) {
+<span class="nc" id="L41">        return this;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

@@ -74,7 +74,7 @@ public class Client extends JFrame implements KeyListener {
 
     public Client() {// 0添加玩家 1请求界面 2移动
         super();
-        terminal = new AsciiPanel(World.WIDTH, World.HEIGHT, AsciiFont.TALRYTH_15_15);
+        terminal = new AsciiPanel(World.WIDTH, World.HEIGHT, AsciiFont.MyUI_20_20);
         add(terminal);
         pack();
         addKeyListener(this);

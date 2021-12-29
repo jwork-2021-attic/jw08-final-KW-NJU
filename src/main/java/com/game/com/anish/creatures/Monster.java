@@ -15,7 +15,7 @@ public class Monster extends Creature implements Runnable {
     static int cnt;
 
     public Monster(World world, Calabash[] player, int[][] maze) {
-        super(Color.RED, (char) 1, world);
+        super(Color.RED, (char) 8, world);
         rand = new Random();
         this.maze = maze;
         this.player = player;
@@ -25,7 +25,7 @@ public class Monster extends Creature implements Runnable {
     }
 
     public Monster(World world, Calabash[] player, int[][] maze, int hp) {
-        super(Color.RED, (char) 1, world);
+        super(Color.RED, (char) 8, world);
         rand = new Random();
         this.maze = maze;
         this.player = player;
@@ -43,15 +43,16 @@ public class Monster extends Creature implements Runnable {
                 for (Calabash c : player)
                     world.put(c, this.getX(), this.getY());
             } else if (maze[x][y] == 5)
-                world.put(new Thing(Color.ORANGE, (char) 3, world), x, y);
+                world.put(new Thing(Color.ORANGE, (char) 9, world), x, y);
             else if (maze[x][y] == 6)
-                world.put(new Thing(Color.ORANGE, (char) 7, world), x, y);
+                world.put(new Thing(Color.ORANGE, (char) 10, world), x, y);
             else if (maze[x][y] == 7)
-                world.put(new Thing(Color.ORANGE, (char) 43, world), x, y);
+                world.put(new Thing(Color.ORANGE, (char) 11, world), x, y);
+            printcnt(9, maze.length + 5);
             return;
         }
         ArrayList<Integer> plan = new ArrayList<Integer>();
-        while (is_alive() && player_alive()) {
+        while (is_alive() && Calabash.hasplayer()) {
             world.lock.lock();
             // idx = bfs.getnear(player, maze, this.getX(), this.getY());
             // int x = player[idx].getX(), y = player[idx].getY();
@@ -70,22 +71,22 @@ public class Monster extends Creature implements Runnable {
                 e.printStackTrace();
             }
             int idx = bfs.get_target(this.getX(), this.getY());
-            if (idx != -1){
-                System.out.println(idx);
+            if (idx != -1) {
                 attack(player[idx]);
             }
             gethurt();
         }
-        if (player_alive()) {
-            try {
-                world.lock.lock();
+        try {
+            world.lock.lock();
+            if (!is_alive()) {
                 hp = 0;
                 --cnt;
-                printcnt(13, maze.length + 1);
-                createitem(this.getX(), this.getY());
-            } finally {
-                world.lock.unlock();
+                printcnt(9, maze.length + 5);
             }
+            if (Calabash.hasplayer())
+                createitem(this.getX(), this.getY());
+        } finally {
+            world.lock.unlock();
         }
     }
 
@@ -123,24 +124,24 @@ public class Monster extends Creature implements Runnable {
             world.put(new Floor(world), this.getX(), this.getY());
             maze[this.getX()][this.getY()] = 1;
         } else if (seed < 6) {
-            world.put(new Thing(Color.ORANGE, (char) 3, world), i, j);
+            world.put(new Thing(Color.ORANGE, (char) 9, world), i, j);
             maze[i][j] = 5;
         } else if (seed < 8) {
-            world.put(new Thing(Color.ORANGE, (char) 7, world), i, j);
+            world.put(new Thing(Color.ORANGE, (char) 10, world), i, j);
             maze[i][j] = 6;
         } else if (seed < 10) {
-            world.put(new Thing(Color.ORANGE, (char) 43, world), i, j);
+            world.put(new Thing(Color.ORANGE, (char) 11, world), i, j);
             maze[i][j] = 7;
         }
     }
 
     public void printcnt(int x, int y) {
-        int num = maxcnt - cnt;
-        if (num > 9)
-            world.put(new Character(world, (char) (num / 10 + '0')), x, y);
+        // int num = maxcnt - cnt;
+        if (cnt > 9)
+            world.put(new Character(world, (char) (cnt / 10 + '0')), x, y);
         else
             world.put(new Character(world, ' '), x, y);
-        world.put(new Character(world, (char) (num % 10 + '0')), x + 1, y);
+        world.put(new Character(world, (char) (cnt % 10 + '0')), x + 1, y);
     }
 
     public static void setcnt(int cnt, int maxcnt) {
@@ -152,11 +153,11 @@ public class Monster extends Creature implements Runnable {
         return Monster.cnt > 0;
     }
 
-    public boolean player_alive() {
-        for (Calabash c : player) {
-            if (c.is_alive())
-                return true;
-        }
-        return false;
-    }
+    // public boolean player_alive() {
+    // for (Calabash c : player) {
+    // if (c.is_alive())
+    // return true;
+    // }
+    // return false;
+    // }
 }

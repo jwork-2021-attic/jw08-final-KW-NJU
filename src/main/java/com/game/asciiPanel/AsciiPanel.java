@@ -369,11 +369,12 @@ public class AsciiPanel extends JPanel {
                         && oldForegroundColors[x][y] == foregroundColors[x][y] && oldChars[x][y] == chars[x][y])
                     continue;
 
-                Color bg = backgroundColors[x][y];
-                Color fg = foregroundColors[x][y];
+                // Color bg = backgroundColors[x][y];
+                // Color fg = foregroundColors[x][y];
 
-                LookupOp op = setColors(bg, fg);
-                BufferedImage img = op.filter(glyphs[chars[x][y]], null);
+                // LookupOp op = setColors(bg, fg);
+                BufferedImage img = glyphs[chars[x][y]];
+                // op.filter(glyphs[chars[x][y]], null);
                 offscreenGraphics.drawImage(img, x * charWidth, y * charHeight, null);
 
                 oldBackgroundColors[x][y] = backgroundColors[x][y];

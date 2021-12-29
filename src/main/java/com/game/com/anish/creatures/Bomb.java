@@ -19,7 +19,7 @@ public class Bomb extends Thing implements Runnable {
     int state; // 0 未爆 1 正爆 2 已爆
 
     public Bomb(Calabash player, World world, int radius, int playernum) {
-        super(Color.YELLOW, (char) 9, world);
+        super(Color.YELLOW, (char) 6, world);
         this.player = player;
         this.attack = 25;
         this.radius = radius;
@@ -31,7 +31,7 @@ public class Bomb extends Thing implements Runnable {
     }
 
     public Bomb(Calabash player, World world, int radius, int playernum, int sec, int milsec) {
-        super(Color.YELLOW, (char) 9, world);
+        super(Color.YELLOW, (char) 6, world);
         this.player = player;
         this.attack = 25;
         this.radius = radius;
@@ -55,7 +55,7 @@ public class Bomb extends Thing implements Runnable {
             setmaze();
             setstate(1);
             if (maze[x][y] == 3)
-                explode(new Character(world, (char) 15), new Floor(world), attack, 1, x, y);
+                explode(new Character(world, (char) 7), new Floor(world), attack, 1, x, y);
         }
         setstate(2);
         player.addbomb();

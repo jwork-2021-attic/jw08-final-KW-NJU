@@ -66,8 +66,7 @@ public class Bfs {
             // }
             // System.out.println(depth);
         }
-        if (target == -1) {
-            System.out.println(-1);
+        if (target == -1 || this.maze[player[target].getX()][player[target].getY()] > 0) {
             plan.add(randomwalk(curx, cury));
             return;
         }

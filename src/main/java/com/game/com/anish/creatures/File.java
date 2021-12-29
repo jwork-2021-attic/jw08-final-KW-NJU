@@ -14,10 +14,12 @@ public class File {
     ArrayList<ArrayList<Integer>> playerinfo;
     ArrayList<ArrayList<Integer>> monsterinfo;
     ArrayList<ArrayList<Integer>> bombinfo;
-    String file;
+    String file, log;
 
     public File() {
-
+        playerinfo = new ArrayList<ArrayList<Integer>>();
+        log = new String();
+        decode();
     }
 
     private void getstatus(int[][] maze, Calabash[] player, Monster[] monster) {
@@ -84,7 +86,7 @@ public class File {
         getstatus(maze, player, monster);
         encode();
         try {
-            FileOutputStream fos = new FileOutputStream("src/main/java/resources/log.txt");
+            FileOutputStream fos = new FileOutputStream("save/log.txt");
             BufferedOutputStream bos = new BufferedOutputStream(fos);
             bos.write(file.getBytes(), 0, file.getBytes().length);
             bos.flush();
@@ -94,10 +96,16 @@ public class File {
         }
     }
 
+    public int getplayernum() {
+        return playerinfo.size();
+    }
+
     public void decode() {
         try {
-            FileInputStream fis = new FileInputStream("src/main/java/resources/log.txt");
+            FileInputStream fis = new FileInputStream("save/log.txt");
             int a = fis.read(), b = fis.read();
+            if (a == -1)
+                return;
             maze = new int[a][b];
             for (int i = 0; i < a; ++i)
                 for (int j = 0; j < b; ++j)
@@ -147,71 +155,6 @@ public class File {
                     temp.add(fis.read() * 100 + fis.read());
                 bombinfo.add(temp);
             }
-
-            // for (int i = 0; i < bombinfo.size(); ++i) {
-            // for (int j = 0; j < bombinfo.get(i).size(); ++j) {
-            // System.out.print(bombinfo.get(i).get(j));
-            // System.out.print(' ');
-            // }
-            // System.out.println();
-            // }
-
-            // while (n != -1 && (char) n != 'p') {
-            // System.out.print(n);
-            // System.out.print(' ');
-            // n = fis.read();
-            // ++cnt;
-            // if (cnt == 30) {
-            // System.out.println();
-            // cnt = 0;
-            // }
-            // }
-            // System.out.println((char) n);
-            // n = fis.read();
-            // while (n != -1 && (char) n != 'm') {
-            // System.out.print(n);
-            // System.out.print(' ');
-            // n = fis.read();
-            // ++cnt;
-            // if (cnt == 6) {
-            // System.out.println();
-            // cnt = 0;
-            // }
-            // }
-            // System.out.println((char) n);
-            // n = fis.read();
-            // while (n != -1 && (char) n != 'b') {
-            // System.out.print(n);
-            // System.out.print(' ');
-            // n = fis.read();
-            // ++cnt;
-            // if (cnt == 3) {
-            // System.out.println();
-            // cnt = 0;
-            // }
-            // }
-            // System.out.println((char) n);
-            // n = fis.read();
-            // int num = 0;
-            // while (n != -1) {
-            // if (cnt == 3 || cnt == 5)
-            // num = n * 100;
-            // else {
-            // if (cnt == 4 || cnt == 6) {
-            // num += n;
-            // System.out.print(num);
-            // } else
-            // System.out.print(n);
-            // System.out.print(' ');
-            // }
-            // n = fis.read();
-            // ++cnt;
-            // if (cnt == 7) {
-            // System.out.println();
-            // cnt = 0;
-            // }
-            // }
-
         } catch (Exception e) {
             e.printStackTrace();
         }

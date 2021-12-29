@@ -35,6 +35,7 @@ public class WorldScreen implements Screen {
     File file;
     int cnt;
     int playerid;
+    int lasttime;
 
     public WorldScreen() {
         dimension = 30;
@@ -42,24 +43,54 @@ public class WorldScreen implements Screen {
         mnum = 9;
         mnum0 = mnum;
         start = 1;
+        file = new File();
         cnt = 0;
         playerid = 0;
+        lasttime = file.getplayernum();
         startgame();
     }
 
     public void startgame() {
         world = new World();
-        for (int i = 0; i < 30; ++i)
-            for (int j = 0; j < 32; ++j)
+        for (int i = 0; i < World.WIDTH; ++i)
+            for (int j = 0; j < World.HEIGHT; ++j)
                 world.put(new Character(world, ' '), i, j);
-        world.put(new Character(world, (char) 16), 10, 13);
-        world.put(new Character(world, 'N'), 11, 13);
-        world.put(new Character(world, 'E'), 12, 13);
-        world.put(new Character(world, 'W'), 13, 13);
-        world.put(new Character(world, 'G'), 15, 13);
-        world.put(new Character(world, 'A'), 16, 13);
-        world.put(new Character(world, 'M'), 17, 13);
-        world.put(new Character(world, 'E'), 18, 13);
+        world.put(new Character(world, 'C'), 11, 6);
+        world.put(new Character(world, 'A'), 12, 6);
+        world.put(new Character(world, 'L'), 13, 6);
+        world.put(new Character(world, 'A'), 14, 6);
+        world.put(new Character(world, 'B'), 15, 6);
+        world.put(new Character(world, 'A'), 16, 6);
+        world.put(new Character(world, 'S'), 17, 6);
+        world.put(new Character(world, 'H'), 18, 6);
+        for (int i = 11; i < 19; ++i)
+            world.put(new Character(world, '-'), i, 7);
+        world.put(new Character(world, 'B'), 11, 8);
+        world.put(new Character(world, 'O'), 12, 8);
+        world.put(new Character(world, 'M'), 13, 8);
+        world.put(new Character(world, 'B'), 14, 8);
+        world.put(new Character(world, 'M'), 16, 8);
+        world.put(new Character(world, 'A'), 17, 8);
+        world.put(new Character(world, 'N'), 18, 8);
+
+        world.put(new Character(world, (char) 102), 11, 10);
+        world.put(new Character(world, (char) 103), 12, 10);
+        world.put(new Character(world, (char) 101), 13, 10);
+        world.put(new Character(world, (char) 106), 14, 10);
+        world.put(new Character(world, (char) 107), 15, 10);
+        world.put(new Character(world, (char) 108), 16, 10);
+        world.put(new Character(world, (char) 104), 17, 10);
+        world.put(new Character(world, (char) 105), 18, 10);
+
+        world.put(new Character(world, (char) 16), 10, 14);
+        world.put(new Character(world, (char) 17), 19, 14);
+        world.put(new Character(world, 'N'), 11, 14);
+        world.put(new Character(world, 'E'), 12, 14);
+        world.put(new Character(world, 'W'), 13, 14);
+        world.put(new Character(world, 'G'), 15, 14);
+        world.put(new Character(world, 'A'), 16, 14);
+        world.put(new Character(world, 'M'), 17, 14);
+        world.put(new Character(world, 'E'), 18, 14);
         world.put(new Character(world, 'C'), 11, 17);
         world.put(new Character(world, 'O'), 12, 17);
         world.put(new Character(world, 'N'), 13, 17);
@@ -68,13 +99,94 @@ public class WorldScreen implements Screen {
         world.put(new Character(world, 'N'), 16, 17);
         world.put(new Character(world, 'U'), 17, 17);
         world.put(new Character(world, 'E'), 18, 17);
+
+        world.put(new Character(world, '('), 5, 18);
+        world.put(new Character(world, 'O'), 6, 18);
+        world.put(new Character(world, 'N'), 7, 18);
+        world.put(new Character(world, 'L'), 8, 18);
+        world.put(new Character(world, 'Y'), 9, 18);
+        world.put(new Character(world, 'A'), 11, 18);
+        world.put(new Character(world, 'V'), 12, 18);
+        world.put(new Character(world, 'A'), 13, 18);
+        world.put(new Character(world, 'I'), 14, 18);
+        world.put(new Character(world, 'L'), 15, 18);
+        world.put(new Character(world, 'A'), 16, 18);
+        world.put(new Character(world, 'B'), 17, 18);
+        world.put(new Character(world, 'L'), 18, 18);
+        world.put(new Character(world, 'E'), 19, 18);
+        world.put(new Character(world, 'W'), 21, 18);
+        world.put(new Character(world, 'H'), 22, 18);
+        world.put(new Character(world, 'E'), 23, 18);
+        world.put(new Character(world, 'N'), 24, 18);
+        world.put(new Character(world, 'C'), 9, 19);
+        world.put(new Character(world, 'U'), 10, 19);
+        world.put(new Character(world, 'R'), 11, 19);
+        world.put(new Character(world, 'R'), 12, 19);
+        world.put(new Character(world, 'E'), 13, 19);
+        world.put(new Character(world, 'N'), 14, 19);
+        world.put(new Character(world, 'T'), 15, 19);
+        world.put(new Character(world, '='), 16, 19);
+        world.put(new Character(world, 'L'), 17, 19);
+        world.put(new Character(world, 'A'), 18, 19);
+        world.put(new Character(world, 'S'), 19, 19);
+        world.put(new Character(world, 'T'), 20, 19);
+        world.put(new Character(world, ')'), 21, 19);
+        for (int i = 9; i < 21; ++i)
+            world.put(new Character(world, '-'), i, 22);
+        world.put(new Character(world, 'C'), 7, 25);
+        world.put(new Character(world, 'U'), 8, 25);
+        world.put(new Character(world, 'R'), 9, 25);
+        world.put(new Character(world, 'R'), 10, 25);
+        world.put(new Character(world, 'E'), 11, 25);
+        world.put(new Character(world, 'N'), 12, 25);
+        world.put(new Character(world, 'T'), 13, 25);
+        world.put(new Character(world, 'P'), 15, 25);
+        world.put(new Character(world, 'L'), 16, 25);
+        world.put(new Character(world, 'A'), 17, 25);
+        world.put(new Character(world, 'Y'), 18, 25);
+        world.put(new Character(world, 'E'), 19, 25);
+        world.put(new Character(world, 'R'), 20, 25);
+        world.put(new Character(world, ':'), 21, 25);
+        world.put(new Character(world, (char) (pnum + '0')), 22, 25);
+        world.put(new Character(world, 'L'), 10, 26);
+        world.put(new Character(world, 'A'), 11, 26);
+        world.put(new Character(world, 'S'), 12, 26);
+        world.put(new Character(world, 'T'), 13, 26);
+        world.put(new Character(world, 'T'), 15, 26);
+        world.put(new Character(world, 'I'), 16, 26);
+        world.put(new Character(world, 'M'), 17, 26);
+        world.put(new Character(world, 'E'), 18, 26);
+        world.put(new Character(world, ':'), 19, 26);
+        world.put(new Character(world, (char) (lasttime + '0')), 20, 26);
+        world.put(new Character(world, 'B'), 8, 30);
+        world.put(new Character(world, 'Y'), 9, 30);
+        world.put(new Character(world, '1'), 11, 30);
+        world.put(new Character(world, '9'), 12, 30);
+        world.put(new Character(world, '1'), 13, 30);
+        world.put(new Character(world, '2'), 14, 30);
+        world.put(new Character(world, '2'), 15, 30);
+        world.put(new Character(world, '0'), 16, 30);
+        world.put(new Character(world, '1'), 17, 30);
+        world.put(new Character(world, '0'), 18, 30);
+        world.put(new Character(world, '9'), 19, 30);
+        world.put(new Character(world, 'K'), 21, 30);
+        world.put(new Character(world, 'W'), 22, 30);
+        world.put(new Character(world, 'F'), 10, 31);
+        world.put(new Character(world, 'R'), 11, 31);
+        world.put(new Character(world, 'O'), 12, 31);
+        world.put(new Character(world, 'M'), 13, 31);
+        world.put(new Character(world, 'N'), 16, 31);
+        world.put(new Character(world, 'J'), 17, 31);
+        world.put(new Character(world, 'U'), 18, 31);
+        world.put(new Character(world, 'C'), 19, 31);
+        world.put(new Character(world, 'S'), 20, 31);
+
     }
 
     public void newgame() {
         player = new Calabash[pnum];
         monster = new Monster[mnum];
         bomb = new ArrayList<Bomb>();
-        file = new File();
         world = new World();
         playerlist = new ArrayList<Node>();
         rand = new Random();
@@ -89,12 +201,12 @@ public class WorldScreen implements Screen {
         player = new Calabash[pnum];
         monster = new Monster[mnum];
         bomb = new ArrayList<Bomb>();
-        file = new File();
         file.decode();
         ArrayList<ArrayList<Integer>> playerinfo = file.getplayer();
         ArrayList<ArrayList<Integer>> monsterinfo = file.getmonster();
         ArrayList<ArrayList<Integer>> bombinfo = file.getbomb();
         getkilled(monsterinfo);
+        Calabash.setcnt(pnum);
         Monster.setcnt(mnum0, mnum);
         world = new World();
         recover_world(playerinfo);
@@ -111,6 +223,7 @@ public class WorldScreen implements Screen {
     }
 
     private void randomaddplayer() {
+        Calabash.setcnt(pnum);
         Monster.setcnt(mnum, mnum);
         if (pnum > 0)
             playerlist.add(new Node(4, 4));
@@ -172,14 +285,9 @@ public class WorldScreen implements Screen {
 
     private void recover_world(ArrayList<ArrayList<Integer>> playerinfo) {
         maze = file.getmaze();
-        for (int i = 0; i < playerinfo.size(); ++i) {
+        for (int i = 0; i < playerinfo.size(); ++i)
             player[i] = new Calabash(world, maze, bomb, i, playerinfo.get(i).get(2), playerinfo.get(i).get(3),
                     playerinfo.get(i).get(4), playerinfo.get(i).get(5));
-            // System.out.print(playerinfo.get(i).get(2));
-            // System.out.print(playerinfo.get(i).get(3));
-            // System.out.print(playerinfo.get(i).get(4));
-            // System.out.print(playerinfo.get(i).get(5));
-        }
         for (int i = 0; i < dimension; ++i) {
             for (int j = 0; j < dimension; ++j) {
                 if (maze[i][j] == 0) {
@@ -197,52 +305,73 @@ public class WorldScreen implements Screen {
     }
 
     private void printinfo() {
-        world.put(new Character(world, 'H'), 0, dimension);
-        world.put(new Character(world, 'P'), 1, dimension);
-        world.put(new Character(world, ':'), 2, dimension);
-        player[0].printhp(3, dimension);
-        world.put(new Character(world, '/'), 6, dimension);
-        player[0].printmaxhp(7, dimension);
-        world.put(new Character(world, ' '), 10, dimension);
-        world.put(new Character(world, ' '), 11, dimension);
-        world.put(new Character(world, 'B'), 12, dimension);
-        world.put(new Character(world, 'O'), 13, dimension);
-        world.put(new Character(world, 'M'), 14, dimension);
-        world.put(new Character(world, 'B'), 15, dimension);
-        world.put(new Character(world, ':'), 16, dimension);
-        player[0].printmaxbomb(17, dimension);
-        world.put(new Character(world, ' '), 19, dimension);
-        world.put(new Character(world, ' '), 20, dimension);
-        world.put(new Character(world, 'R'), 21, dimension);
-        world.put(new Character(world, 'A'), 22, dimension);
-        world.put(new Character(world, 'D'), 23, dimension);
-        world.put(new Character(world, 'I'), 24, dimension);
-        world.put(new Character(world, 'U'), 25, dimension);
-        world.put(new Character(world, 'S'), 26, dimension);
-        world.put(new Character(world, ':'), 27, dimension);
-        player[0].printr(28, dimension);
-        for (int i = 30; i < dimension; ++i)
-            world.put(new Character(world, ' '), i, dimension);
-        world.put(new Character(world, 'E'), 0, dimension + 1);
-        world.put(new Character(world, 'N'), 1, dimension + 1);
-        world.put(new Character(world, 'E'), 2, dimension + 1);
-        world.put(new Character(world, 'M'), 3, dimension + 1);
-        world.put(new Character(world, 'Y'), 4, dimension + 1);
-        world.put(new Character(world, ' '), 5, dimension + 1);
-        world.put(new Character(world, 'K'), 6, dimension + 1);
-        world.put(new Character(world, 'I'), 7, dimension + 1);
-        world.put(new Character(world, 'L'), 8, dimension + 1);
-        world.put(new Character(world, 'L'), 9, dimension + 1);
-        world.put(new Character(world, 'E'), 10, dimension + 1);
-        world.put(new Character(world, 'D'), 11, dimension + 1);
-        world.put(new Character(world, ':'), 12, dimension + 1);
-        world.put(new Character(world, ' '), 13, dimension + 1);
-        world.put(new Character(world, (char) (mnum - mnum0 + '0')), 14, dimension + 1);
-        world.put(new Character(world, '/'), 15, dimension + 1);
-        world.put(new Character(world, (char) (mnum + '0')), 16, dimension + 1);
-        world.put(new Character(world, ' '), 17, dimension + 1);
-        for (int i = 18; i < dimension; ++i)
-            world.put(new Character(world, ' '), i, dimension + 1);
+        for (int i = 0; i < World.WIDTH; ++i)
+            for (int j = 30; j < World.HEIGHT; ++j)
+                world.put(new Character(world, ' '), i, j);
+        world.put(new Character(world, 'S'), 0, dimension);
+        world.put(new Character(world, 'T'), 1, dimension);
+        world.put(new Character(world, 'A'), 2, dimension);
+        world.put(new Character(world, 'T'), 3, dimension);
+        world.put(new Character(world, 'U'), 4, dimension);
+        world.put(new Character(world, 'S'), 5, dimension);
+        world.put(new Character(world, 'H'), 10, dimension);
+        world.put(new Character(world, 'P'), 11, dimension);
+        world.put(new Character(world, '/'), 12, dimension);
+        world.put(new Character(world, 'M'), 13, dimension);
+        world.put(new Character(world, 'A'), 14, dimension);
+        world.put(new Character(world, 'X'), 15, dimension);
+        world.put(new Character(world, 'B'), 18, dimension);
+        world.put(new Character(world, 'O'), 19, dimension);
+        world.put(new Character(world, 'M'), 20, dimension);
+        world.put(new Character(world, 'B'), 21, dimension);
+        world.put(new Character(world, 'R'), 24, dimension);
+        world.put(new Character(world, 'A'), 25, dimension);
+        world.put(new Character(world, 'D'), 26, dimension);
+        world.put(new Character(world, 'I'), 27, dimension);
+        world.put(new Character(world, 'U'), 28, dimension);
+        world.put(new Character(world, 'S'), 29, dimension);
+        world.put(new Character(world, 'M'), 0, dimension + 5);
+        world.put(new Character(world, 'O'), 1, dimension + 5);
+        world.put(new Character(world, 'N'), 2, dimension + 5);
+        world.put(new Character(world, 'S'), 3, dimension + 5);
+        world.put(new Character(world, 'T'), 4, dimension + 5);
+        world.put(new Character(world, 'E'), 5, dimension + 5);
+        world.put(new Character(world, 'R'), 6, dimension + 5);
+        world.put(new Character(world, (char) 108), 7, dimension + 5);
+        world.put(new Character(world, ':'), 8, dimension + 5);
+        // world.put(new Character(world, (char) (mnum - mnum0 + '0')), 10, dimension +
+        // 5);
+        world.put(new Character(world, (char) (mnum + '0')), 10, dimension + 5);
+        world.put(new Character(world, '/'), 11, dimension + 5);
+        world.put(new Character(world, (char) (mnum + '0')), 12, dimension + 5);
+        for (int i = 0; i < 4; ++i) {
+            world.put(new Character(world, 'P'), 0, dimension + i + 1);
+            world.put(new Character(world, 'L'), 1, dimension + i + 1);
+            world.put(new Character(world, 'A'), 2, dimension + i + 1);
+            world.put(new Character(world, 'Y'), 3, dimension + i + 1);
+            world.put(new Character(world, 'E'), 4, dimension + i + 1);
+            world.put(new Character(world, 'R'), 5, dimension + i + 1);
+            world.put(new Character(world, (char) (i + 1 + '0')), 6, dimension + i + 1);
+            world.put(new Character(world, (char) (102 + i)), 7, dimension + i + 1);
+            world.put(new Character(world, ':'), 8, dimension + i + 1);
+        }
+        for (int i = 0; i < player.length; ++i) {
+            player[i].printhp(9, dimension + i + 1);
+            world.put(new Character(world, '/'), 12, dimension + i + 1);
+            player[i].printmaxhp(13, dimension + i + 1);
+            player[i].printmaxbomb(19, dimension + i + 1);
+            player[i].printr(26, dimension + i + 1);
+        }
+        for (int i = player.length; i < 4; ++i) {
+            for (int j = 9; j < 17; ++j)
+                world.put(new Character(world, '-'), j, dimension + i + 1);
+            world.put(new Character(world, 'N'), 17, dimension + i + 1);
+            world.put(new Character(world, 'O'), 18, dimension + i + 1);
+            world.put(new Character(world, 'N'), 19, dimension + i + 1);
+            world.put(new Character(world, 'E'), 20, dimension + i + 1);
+            for (int j = 21; j < 29; ++j)
+                world.put(new Character(world, '-'), j, dimension + i + 1);
+        }
     }
 
     private void init_creature() {
@@ -268,6 +397,8 @@ public class WorldScreen implements Screen {
             exec.execute(monster[i]);
             world.put(monster[i], monsterinfo.get(i).get(0), monsterinfo.get(i).get(1));
         }
+        // world.put(new Character(world, (char) (Monster.cnt + '0')), 10, dimension +
+        // 5);
     }
 
     private void recover_bomb(ArrayList<ArrayList<Integer>> bombinfo) {
@@ -297,33 +428,39 @@ public class WorldScreen implements Screen {
     }
 
     public Screen respondToClient(int playerid, int keycode) {
-        System.out.print(playerid);
-        System.out.print(' ');
-        System.out.println(keycode);
+        if (start == -1)
+            return this;
         if (start > 0) {
             switch (keycode) {
                 case KeyEvent.VK_UP:
-                    world.put(new Character(world, (char) 16), 10, 13);
-                    world.put(new Character(world, ' '), 10, 17);
-                    start = 1;
-                    break;
                 case KeyEvent.VK_DOWN:
-                    world.put(new Character(world, (char) 16), 10, 17);
-                    world.put(new Character(world, ' '), 10, 13);
-                    start = 2;
+                    start = 3 - start;
                     break;
                 case KeyEvent.VK_SPACE:
                     if (start == 1)
                         newgame();
-                    else
-                        oldgame();
+                    else if (start == 2) {
+                        if (pnum == lasttime)
+                            oldgame();
+                        else
+                            break;
+                    }
                     start = 0;
-                    break;
+                    return this;
+            }
+            if (start == 1) {
+                world.put(new Character(world, (char) 16), 10, 14);
+                world.put(new Character(world, (char) 17), 19, 14);
+                world.put(new Character(world, ' '), 4, 18);
+                world.put(new Character(world, ' '), 25, 18);
+            } else if (start == 2) {
+                world.put(new Character(world, ' '), 10, 14);
+                world.put(new Character(world, ' '), 19, 14);
+                world.put(new Character(world, (char) 16), 4, 18);
+                world.put(new Character(world, (char) 17), 25, 18);
             }
             return this;
         }
-        if (!Monster.hasmonster())
-            return this;
         switch (keycode) {
             case KeyEvent.VK_LEFT:
                 player[playerid].move(world, 27);
@@ -349,6 +486,65 @@ public class WorldScreen implements Screen {
         return this;
     }
 
+    public void check() {
+        if (start > 0 || start == -1)
+            return;
+        if (Calabash.getplayer() == 0 && Monster.hasmonster()) {
+            world.put(new Character(world, 'M'), 16, dimension + 5);
+            world.put(new Character(world, 'O'), 17, dimension + 5);
+            world.put(new Character(world, 'N'), 18, dimension + 5);
+            world.put(new Character(world, 'S'), 19, dimension + 5);
+            world.put(new Character(world, 'T'), 20, dimension + 5);
+            world.put(new Character(world, 'E'), 21, dimension + 5);
+            world.put(new Character(world, 'R'), 22, dimension + 5);
+            world.put(new Character(world, 'S'), 23, dimension + 5);
+            world.put(new Character(world, (char) 108), 24, dimension + 5);
+            world.put(new Character(world, 'W'), 26, dimension + 5);
+            world.put(new Character(world, 'I'), 27, dimension + 5);
+            world.put(new Character(world, 'N'), 28, dimension + 5);
+            world.put(new Character(world, '!'), 29, dimension + 5);
+            start = -1;
+        } else if (Calabash.getplayer() == 1 && !Monster.hasmonster()) {
+            int num = -1;
+            for (int i = 0; i < player.length; ++i) {
+                if (player[i].is_alive()) {
+                    num = i;
+                    break;
+                }
+            }
+            if (num == -1)
+                return;
+            world.put(new Character(world, 'P'), 17, dimension + 5);
+            world.put(new Character(world, 'L'), 18, dimension + 5);
+            world.put(new Character(world, 'A'), 19, dimension + 5);
+            world.put(new Character(world, 'Y'), 20, dimension + 5);
+            world.put(new Character(world, 'E'), 21, dimension + 5);
+            world.put(new Character(world, 'R'), 22, dimension + 5);
+            world.put(new Character(world, (char) (num + 1 + '0')), 23, dimension + 5);
+            world.put(new Character(world, (char) (102 + num)), 24, dimension + 5);
+            world.put(new Character(world, 'W'), 26, dimension + 5);
+            world.put(new Character(world, 'I'), 27, dimension + 5);
+            world.put(new Character(world, 'N'), 28, dimension + 5);
+            world.put(new Character(world, '!'), 29, dimension + 5);
+            start = -1;
+        } else if (Calabash.getplayer() == 0 && !Monster.hasmonster()) {
+            int num = Calabash.getdeath();
+            world.put(new Character(world, 'P'), 17, dimension + 5);
+            world.put(new Character(world, 'L'), 18, dimension + 5);
+            world.put(new Character(world, 'A'), 19, dimension + 5);
+            world.put(new Character(world, 'Y'), 20, dimension + 5);
+            world.put(new Character(world, 'E'), 21, dimension + 5);
+            world.put(new Character(world, 'R'), 22, dimension + 5);
+            world.put(new Character(world, (char) (num + 1 + '0')), 23, dimension + 5);
+            world.put(new Character(world, (char) (102 + num)), 24, dimension + 5);
+            world.put(new Character(world, 'W'), 26, dimension + 5);
+            world.put(new Character(world, 'I'), 27, dimension + 5);
+            world.put(new Character(world, 'N'), 28, dimension + 5);
+            world.put(new Character(world, '!'), 29, dimension + 5);
+            start = -1;
+        }
+    }
+
     public void writelog() {
         file.writelog(maze, player, monster);
     }
@@ -365,15 +561,16 @@ public class WorldScreen implements Screen {
         return monster;
     }
 
-    private void addplayer() {
+    public void addplayer() {
         ++pnum;
         --mnum;
         --mnum0;
+        world.put(new Character(world, (char) (pnum + '0')), 22, 25);
     }
 
     public int getplayerid() {
         int res = -1;
-        if (start != 0) {
+        if (start > 0) {
             res = playerid;
             ++playerid;
             addplayer();

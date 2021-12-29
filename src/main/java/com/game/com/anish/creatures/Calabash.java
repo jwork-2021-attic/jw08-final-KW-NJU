@@ -14,11 +14,13 @@ public class Calabash extends Creature implements Runnable {
     int bomb;
     int radius;
     int playernum;
+    static int cnt;
+    static int death;
 
     ArrayList<Bomb> bomblist;
 
     public Calabash(World world, int[][] maze, ArrayList<Bomb> bomblist, int playernum) {
-        super(Color.GREEN, (char) 2, world);
+        super(Color.GREEN, (char) (2 + playernum), world);
         hp = 100;
         maxhp = 100;
         this.maze = maze;
@@ -28,11 +30,12 @@ public class Calabash extends Creature implements Runnable {
         setbomb(1, 1);
         this.bomblist = bomblist;
         this.playernum = playernum;
+        Calabash.death = -1;
     }
 
     public Calabash(World world, int[][] maze, ArrayList<Bomb> bomblist, int playernum, int hp, int bomb, int maxbomb,
             int radius) {
-        super(Color.GREEN, (char) 2, world);
+        super(Color.GREEN, (char) (2 + playernum), world);
         this.hp = hp;
         maxhp = 100;
         this.maze = maze;
@@ -46,8 +49,7 @@ public class Calabash extends Creature implements Runnable {
 
     public void run() {
         maze[this.getX()][this.getY()] = 2;
-        while (is_alive() && Monster.hasmonster()) {
-            // --hp;
+        while (is_alive() && (Calabash.cnt > 1 || Monster.hasmonster())) {
             gethurt();
             try {
                 TimeUnit.MILLISECONDS.sleep(50);
@@ -56,10 +58,12 @@ public class Calabash extends Creature implements Runnable {
                 e.printStackTrace();
             }
         }
-        if (Monster.hasmonster())
+        if (!is_alive())
             is_dead();
-        else
-            win();
+    }
+
+    public static boolean hasplayer() {
+        return Calabash.cnt > 0;
     }
 
     @Override
@@ -93,13 +97,13 @@ public class Calabash extends Creature implements Runnable {
                 }
                 if (maze[newx][newy] == 5) {
                     hp = Math.min(hp + 10, maxhp);
-                    printhp(3, maze.length);
+                    printhp(9, maze.length + playernum + 1);
                 } else if (maze[newx][newy] == 6) {
                     bombitem();
-                    printmaxbomb(17, maze.length);
+                    printmaxbomb(19, maze.length + playernum + 1);
                 } else if (maze[newx][newy] == 7) {
                     addradius();
-                    printr(28, maze.length);
+                    printr(26, maze.length + playernum + 1);
                 }
                 maze[newx][newy] = 2;
             }
@@ -127,7 +131,7 @@ public class Calabash extends Creature implements Runnable {
     @Override
     public void getattack(int num) {
         hp -= num;
-        printhp(3, maze.length);
+        printhp(9, maze.length + playernum + 1);
     }
 
     public int getmaxhp() {
@@ -139,18 +143,17 @@ public class Calabash extends Creature implements Runnable {
     }
 
     public void is_dead() {
-        hp = 0;
-        printhp(3, maze.length);
-        world.put(new Floor(world), this.getX(), this.getY());
-        world.put(new Character(world, 'Y'), maze.length - 9, maze.length + 1);
-        world.put(new Character(world, 'O'), maze.length - 8, maze.length + 1);
-        world.put(new Character(world, 'U'), maze.length - 7, maze.length + 1);
-        world.put(new Character(world, ' '), maze.length - 6, maze.length + 1);
-        world.put(new Character(world, 'L'), maze.length - 5, maze.length + 1);
-        world.put(new Character(world, 'O'), maze.length - 4, maze.length + 1);
-        world.put(new Character(world, 'S'), maze.length - 3, maze.length + 1);
-        world.put(new Character(world, 'T'), maze.length - 2, maze.length + 1);
-        world.put(new Character(world, '!'), maze.length - 1, maze.length + 1);
+        try {
+            world.lock.lock();
+            hp = 0;
+            --Calabash.cnt;
+            if (Calabash.cnt == 0)
+                Calabash.death = playernum;
+            printdead(9, maze.length + playernum + 1);
+            world.put(new Floor(world), this.getX(), this.getY());
+        } finally {
+            world.lock.unlock();
+        }
     }
 
     public void printhp(int x, int y) {
@@ -164,6 +167,16 @@ public class Calabash extends Creature implements Runnable {
         String str = toString(maxhp);
         for (int i = 0; i < str.length(); ++i)
             world.put(new Character(world, str.charAt(i)), i + x, y);
+    }
+
+    private void printdead(int x, int y) {
+        world.put(new Character(world, ' '), x, y);
+        world.put(new Character(world, '-'), x + 1, y);
+        world.put(new Character(world, 'D'), x + 2, y);
+        world.put(new Character(world, 'E'), x + 3, y);
+        world.put(new Character(world, 'A'), x + 4, y);
+        world.put(new Character(world, 'D'), x + 5, y);
+        world.put(new Character(world, '-'), x + 6, y);
     }
 
     public void printbomb(int x, int y) {
@@ -265,6 +278,8 @@ public class Calabash extends Creature implements Runnable {
             return;
         int x = this.getX();
         int y = this.getY();
+        if (maze[x][y] == 3)
+            return;
         maze[x][y] = 3;
         Bomb bomb = new Bomb(this, world, radius, playernum);
         bomblist.add(bomb);
@@ -273,14 +288,15 @@ public class Calabash extends Creature implements Runnable {
         usebomb();
     }
 
-    public void win() {
-        world.put(new Character(world, 'Y'), maze.length - 8, maze.length + 1);
-        world.put(new Character(world, 'O'), maze.length - 7, maze.length + 1);
-        world.put(new Character(world, 'U'), maze.length - 6, maze.length + 1);
-        world.put(new Character(world, ' '), maze.length - 5, maze.length + 1);
-        world.put(new Character(world, 'W'), maze.length - 4, maze.length + 1);
-        world.put(new Character(world, 'I'), maze.length - 3, maze.length + 1);
-        world.put(new Character(world, 'N'), maze.length - 2, maze.length + 1);
-        world.put(new Character(world, '!'), maze.length - 1, maze.length + 1);
+    public static void setcnt(int pnum) {
+        Calabash.cnt = pnum;
+    }
+
+    public static int getplayer() {
+        return cnt;
+    }
+
+    public static int getdeath() {
+        return Calabash.death;
     }
 }

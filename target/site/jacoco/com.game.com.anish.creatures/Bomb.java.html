@@ -19,7 +19,7 @@ public class Bomb extends Thing implements Runnable {
     int state; // 0 未爆 1 正爆 2 已爆
 
     public Bomb(Calabash player, World world, int radius, int playernum) {
-<span class="fc" id="L22">        super(Color.YELLOW, (char) 9, world);</span>
+<span class="fc" id="L22">        super(Color.YELLOW, (char) 6, world);</span>
 <span class="fc" id="L23">        this.player = player;</span>
 <span class="fc" id="L24">        this.attack = 25;</span>
 <span class="fc" id="L25">        this.radius = radius;</span>
@@ -31,7 +31,7 @@ public class Bomb extends Thing implements Runnable {
 <span class="fc" id="L31">    }</span>
 
     public Bomb(Calabash player, World world, int radius, int playernum, int sec, int milsec) {
-<span class="fc" id="L34">        super(Color.YELLOW, (char) 9, world);</span>
+<span class="fc" id="L34">        super(Color.YELLOW, (char) 6, world);</span>
 <span class="fc" id="L35">        this.player = player;</span>
 <span class="fc" id="L36">        this.attack = 25;</span>
 <span class="fc" id="L37">        this.radius = radius;</span>
@@ -55,7 +55,7 @@ public class Bomb extends Thing implements Runnable {
 <span class="nc" id="L55">            setmaze();</span>
 <span class="nc" id="L56">            setstate(1);</span>
 <span class="nc bnc" id="L57" title="All 2 branches missed.">            if (maze[x][y] == 3)</span>
-<span class="nc" id="L58">                explode(new Character(world, (char) 15), new Floor(world), attack, 1, x, y);</span>
+<span class="nc" id="L58">                explode(new Character(world, (char) 7), new Floor(world), attack, 1, x, y);</span>
         }
 <span class="nc" id="L60">        setstate(2);</span>
 <span class="nc" id="L61">        player.addbomb();</span>
@@ -89,7 +89,7 @@ public class Bomb extends Thing implements Runnable {
     }
 
     public int getattack() {
-<span class="fc" id="L92">        return attack;</span>
+<span class="nc" id="L92">        return attack;</span>
     }
 
     public int getradius() {

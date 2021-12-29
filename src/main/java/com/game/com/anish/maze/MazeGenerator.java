@@ -29,17 +29,17 @@ public class MazeGenerator {
 
     public void generateMaze() {
         // for (int i = 0; i < 30; ++i) {
-        //     for (int j = 0; j < 30; ++j)
-        //         maze[i][j] = 1;
+        // for (int j = 0; j < 30; ++j)
+        // maze[i][j] = 1;
         // }
         for (int i = 0; i < 2; ++i) {
-        ArrayList<Node> temp = new ArrayList<>();
-        for (int j = 0; j < arr.size(); ++j) {
-        Node next = arr.get(j);
-        ArrayList<Node> neighbors = findNeighbors(next);
-        randomlyAddNodesToStack(neighbors, temp);
-        }
-        arr = temp;
+            ArrayList<Node> temp = new ArrayList<>();
+            for (int j = 0; j < arr.size(); ++j) {
+                Node next = arr.get(j);
+                ArrayList<Node> neighbors = findNeighbors(next);
+                randomlyAddNodesToStack(neighbors, temp);
+            }
+            arr = temp;
         }
     }
 

@@ -6,10 +6,11 @@ import java.util.concurrent.locks.ReentrantLock;
 public class World {
 
     public static final int WIDTH = 30;
-    public static final int HEIGHT = 32;
+    public static final int HEIGHT = 36;
     Lock lock = new ReentrantLock();
 
     private Tile<Thing>[][] tiles;
+    File file;
 
     public World() {
 
