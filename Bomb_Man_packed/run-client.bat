@@ -1,0 +1,1 @@
+java -cp Bomb_Man.jar com.game.Client.Client

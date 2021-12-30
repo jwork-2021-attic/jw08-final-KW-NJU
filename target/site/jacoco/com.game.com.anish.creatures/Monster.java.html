@@ -52,7 +52,7 @@ public class Monster extends Creature implements Runnable {
 <span class="nc" id="L52">            return;</span>
         }
 <span class="fc" id="L54">        ArrayList&lt;Integer&gt; plan = new ArrayList&lt;Integer&gt;();</span>
-<span class="pc bpc" id="L55" title="2 of 4 branches missed.">        while (is_alive() &amp;&amp; Calabash.hasplayer()) {</span>
+<span class="pc bpc" id="L55" title="1 of 4 branches missed.">        while (is_alive() &amp;&amp; Calabash.hasplayer()) {</span>
 <span class="fc" id="L56">            world.lock.lock();</span>
             // idx = bfs.getnear(player, maze, this.getX(), this.getY());
             // int x = player[idx].getX(), y = player[idx].getY();
@@ -77,18 +77,18 @@ public class Monster extends Creature implements Runnable {
 <span class="fc" id="L77">            gethurt();</span>
         }
         try {
-<span class="nc" id="L80">            world.lock.lock();</span>
-<span class="nc bnc" id="L81" title="All 2 branches missed.">            if (!is_alive()) {</span>
+<span class="fc" id="L80">            world.lock.lock();</span>
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">            if (!is_alive()) {</span>
 <span class="nc" id="L82">                hp = 0;</span>
 <span class="nc" id="L83">                --cnt;</span>
 <span class="nc" id="L84">                printcnt(9, maze.length + 5);</span>
             }
-<span class="nc bnc" id="L86" title="All 2 branches missed.">            if (Calabash.hasplayer())</span>
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">            if (Calabash.hasplayer())</span>
 <span class="nc" id="L87">                createitem(this.getX(), this.getY());</span>
 <span class="nc" id="L88">        } finally {</span>
-<span class="nc" id="L89">            world.lock.unlock();</span>
+<span class="fc" id="L89">            world.lock.unlock();</span>
         }
-<span class="nc" id="L91">    }</span>
+<span class="fc" id="L91">    }</span>
 
     public void attack(Calabash player) {
 <span class="fc" id="L94">        player.getattack(attack);</span>
@@ -123,15 +123,15 @@ public class Monster extends Creature implements Runnable {
 <span class="pc bpc" id="L123" title="2 of 4 branches missed.">        if (cnt == 0 || seed &lt; 3) {</span>
 <span class="nc" id="L124">            world.put(new Floor(world), this.getX(), this.getY());</span>
 <span class="nc" id="L125">            maze[this.getX()][this.getY()] = 1;</span>
-<span class="pc bpc" id="L126" title="1 of 2 branches missed.">        } else if (seed &lt; 6) {</span>
+<span class="pc bfc" id="L126" title="All 2 branches covered.">        } else if (seed &lt; 6) {</span>
 <span class="fc" id="L127">            world.put(new Thing(Color.ORANGE, (char) 9, world), i, j);</span>
 <span class="fc" id="L128">            maze[i][j] = 5;</span>
-<span class="pc bnc" id="L129" title="All 2 branches missed.">        } else if (seed &lt; 8) {</span>
-<span class="nc" id="L130">            world.put(new Thing(Color.ORANGE, (char) 10, world), i, j);</span>
-<span class="nc" id="L131">            maze[i][j] = 6;</span>
-<span class="nc bnc" id="L132" title="All 2 branches missed.">        } else if (seed &lt; 10) {</span>
-<span class="nc" id="L133">            world.put(new Thing(Color.ORANGE, (char) 11, world), i, j);</span>
-<span class="nc" id="L134">            maze[i][j] = 7;</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">        } else if (seed &lt; 8) {</span>
+<span class="fc" id="L130">            world.put(new Thing(Color.ORANGE, (char) 10, world), i, j);</span>
+<span class="fc" id="L131">            maze[i][j] = 6;</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">        } else if (seed &lt; 10) {</span>
+<span class="fc" id="L133">            world.put(new Thing(Color.ORANGE, (char) 11, world), i, j);</span>
+<span class="fc" id="L134">            maze[i][j] = 7;</span>
         }
 <span class="fc" id="L136">    }</span>
 

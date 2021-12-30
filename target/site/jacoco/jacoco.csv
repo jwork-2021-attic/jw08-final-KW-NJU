@@ -8,11 +8,11 @@ myprj,com.game.com.anish.creatures,World,0,69,1,5,0,12,1,5,0,3
 myprj,com.game.com.anish.creatures,Bfs,528,629,72,73,56,97,44,44,3,11
 myprj,com.game.com.anish.creatures,Bomb,177,107,14,4,27,33,11,10,2,10
 myprj,com.game.com.anish.creatures,Wall,0,6,0,0,0,2,0,1,0,1
-myprj,com.game.com.anish.creatures,Monster,281,234,32,12,39,55,22,9,0,9
+myprj,com.game.com.anish.creatures,Monster,222,293,25,19,29,65,19,12,0,9
 myprj,com.game.com.anish.creatures,Thing,0,30,0,0,0,11,0,6,0,6
 myprj,com.game.com.anish.creatures,File,211,534,12,26,26,76,8,21,0,10
 myprj,com.game.com.anish.creatures,Character,0,6,0,0,0,2,0,1,0,1
-myprj,com.game.com.anish.creatures,Calabash,294,714,38,40,44,140,38,31,7,23
+myprj,com.game.com.anish.creatures,Calabash,292,716,37,41,44,140,37,32,7,23
 myprj,com.game.com.anish.creatures,Floor,0,6,0,0,0,2,0,1,0,1
 myprj,com.game.com.anish.creatures,Tile,17,26,0,0,8,10,3,5,3,5
 myprj,com.game.com.anish.creatures,Creature,18,136,7,15,4,31,9,10,2,6
